@@ -1,0 +1,116 @@
+[
+  {
+    "route": "/admin/contacts",
+    "method": "GET",
+    "status": 200,
+    "ok": true
+  },
+  {
+    "route": "/admin/contacts",
+    "method": "POST",
+    "status": 201,
+    "ok": true
+  },
+  {
+    "route": "/admin/stats",
+    "method": "GET",
+    "status": 200,
+    "ok": true
+  },
+  {
+    "route": "/admin/stats/articles",
+    "method": "GET",
+    "status": 200,
+    "ok": true
+  },
+  {
+    "route": "/admin/stats/users",
+    "method": "GET",
+    "status": 200,
+    "ok": true
+  },
+  {
+    "route": "/admin/users",
+    "method": "GET",
+    "status": 200,
+    "ok": true
+  },
+  {
+    "route": "/articles",
+    "method": "GET",
+    "status": 200,
+    "ok": true
+  },
+  {
+    "route": "/articles",
+    "method": "POST",
+    "status": 400,
+    "ok": false
+  },
+  {
+    "route": "/articles/featured",
+    "method": "GET",
+    "status": 200,
+    "ok": true
+  },
+  {
+    "route": "/auth/session",
+    "method": "GET",
+    "status": 401,
+    "ok": false
+  },
+  {
+    "route": "/auth/login",
+    "method": "POST",
+    "status": 401,
+    "ok": false
+  },
+  {
+    "route": "/auth/register",
+    "method": "POST",
+    "status": 201,
+    "ok": true
+  },
+  {
+    "route": "/categories",
+    "method": "GET",
+    "status": 200,
+    "ok": true
+  },
+  {
+    "route": "/categories",
+    "method": "POST",
+    "status": 409,
+    "ok": false
+  },
+  {
+    "route": "/contacts",
+    "method": "GET",
+    "status": 200,
+    "ok": true
+  },
+  {
+    "route": "/users/me",
+    "method": "GET",
+    "status": 404,
+    "ok": false
+  },
+  {
+    "route": "/users/me",
+    "method": "PUT",
+    "status": 500,
+    "ok": false
+  },
+  {
+    "route": "/users/me/likes",
+    "method": "GET",
+    "status": 200,
+    "ok": true
+  },
+  {
+    "route": "/users/me/notifications",
+    "method": "GET",
+    "status": 200,
+    "ok": true
+  }
+]
