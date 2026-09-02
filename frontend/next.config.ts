@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const API_BACKEND_URL = process.env.BACKEND_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
+
 const nextConfig: NextConfig = {
   turbopack: {
     // Point Turbopack to the project root to avoid workspace root inference warnings
@@ -26,6 +28,14 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
     ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: `${API_BACKEND_URL}/:path*`,
+      },
+    ];
   },
 };
 

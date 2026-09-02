@@ -37,7 +37,10 @@ export default function Navbar() {
         if (data && data.id) {
           setUnreadCount(prev => prev + 1);
         }
-      } catch (err) { }
+      } catch {}
+    };
+    eventSource.onerror = () => {
+      eventSource.close();
     };
 
     return () => {
