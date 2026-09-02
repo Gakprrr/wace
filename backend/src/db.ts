@@ -1,19 +1,15 @@
+import "dotenv/config";
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 
 /**
  * Connexion Prisma v7 avec adaptateur pg.Pool.
- * Prisma v7 exige un adaptateur explicite (PrismaPg ou Accelerate).
- * Le DATABASE_URL pointe vers le serveur Prisma local (prisma dev) qui expose
- * un vrai endpoint PostgreSQL.
+ * DATABASE_URL pointe vers l'instance PostgreSQL.
  */
 
-const connectionString = process.env.DATABASE_URL;
-
-if (!connectionString) {
-  throw new Error("DATABASE_URL is not defined in environment variables");
-}
+const connectionString =
+  process.env.DATABASE_URL || "postgresql://wace:wace123@localhost:5434/wacedb?schema=public";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
