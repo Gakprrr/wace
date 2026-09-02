@@ -17,7 +17,7 @@ interface Notification {
 
 export default function ClientNotificationsPage() {
   const { user } = useAuth();
-  const { t } = useLang();
+  const { t, locale } = useLang();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
 

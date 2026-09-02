@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { getGlobalStats } from "@/services/stats.service";
 import { uploadImage } from "@/services/upload.service";
+import { generateQrStickersPdf } from "@/services/pdf.service";
 import { db } from "@/db";
 import { requireAdminMiddleware } from "@/middleware/expressAuth";
 import { errorResponse } from "@/utils/auth";
@@ -71,6 +72,19 @@ router.post("/upload", async (req, res) => {
     }
     const url = await uploadImage(fileData);
     res.status(201).json({ url });
+  } catch (error) {
+    const err = errorResponse(error);
+    res.status(err.status).json({ error: err.error });
+  }
+});
+
+// GET /api/admin/export/qr-pdf (Export des étiquettes QR Code en PDF A4)
+router.get("/export/qr-pdf", async (req, res) => {
+  try {
+    const pdfBuffer = await generateQrStickersPdf();
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", "attachment; filename=etiquettes-qrcode-wace.pdf");
+    res.send(pdfBuffer);
   } catch (error) {
     const err = errorResponse(error);
     res.status(err.status).json({ error: err.error });

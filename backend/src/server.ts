@@ -13,6 +13,7 @@ import notificationsRoutes from "@/routes/notifications.routes";
 import usersRoutes from "@/routes/users.routes";
 import adminRoutes from "@/routes/admin.routes";
 import ordersRoutes from "@/routes/orders.routes";
+import docsRoutes from "@/routes/docs.routes";
 
 dotenv.config();
 
@@ -49,6 +50,7 @@ app.use("/api/notifications", notificationsRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/orders", ordersRoutes);
+app.use("/api/docs", docsRoutes);
 
 // Global Error Handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

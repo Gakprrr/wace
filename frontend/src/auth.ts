@@ -68,10 +68,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     async session({ session, token }) {
       if (token && session.user) {
-        session.user.id = token.id as string
-        session.user.role = token.role as string
-        session.user.twoFactorEnabled = token.twoFactorEnabled as boolean
-        session.user.twoFactorVerified = token.twoFactorVerified as boolean
+        (session.user as any).id = token.id as string;
+        (session.user as any).role = token.role as string;
+        (session.user as any).twoFactorEnabled = token.twoFactorEnabled as boolean;
+        (session.user as any).twoFactorVerified = token.twoFactorVerified as boolean;
       }
       return session
     }

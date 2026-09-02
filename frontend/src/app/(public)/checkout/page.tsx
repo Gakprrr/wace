@@ -47,7 +47,7 @@ export default function CheckoutPage() {
 
     try {
       const orderItems = items.map((item) => ({
-        articleId: item.article.id,
+        articleId: item.id,
         quantity: item.quantity,
       }));
 
@@ -236,13 +236,13 @@ export default function CheckoutPage() {
           </h3>
           <div className="divide-y divide-gray-100 dark:divide-gray-700 max-h-80 overflow-y-auto pr-1">
             {items.map((item) => (
-              <div key={item.article.id} className="py-3 flex justify-between items-center text-sm">
+              <div key={item.id} className="py-3 flex justify-between items-center text-sm">
                 <div>
-                  <p className="font-semibold text-gray-800 dark:text-gray-200">{item.article.title}</p>
+                  <p className="font-semibold text-gray-800 dark:text-gray-200">{item.title}</p>
                   <p className="text-xs text-gray-500">Quantité: {item.quantity}</p>
                 </div>
                 <p className="font-bold text-gray-900 dark:text-white">
-                  {(Number(item.article.price) * item.quantity).toLocaleString()} FCFA
+                  {(Number(item.price) * item.quantity).toLocaleString()} FCFA
                 </p>
               </div>
             ))}

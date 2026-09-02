@@ -5,7 +5,7 @@ import AdminSidebar from "@/components/AdminSidebar";
 import ConfirmModal from "@/components/ConfirmModal";
 import AlertModal from "@/components/AlertModal";
 import QRCodeModal from "@/components/QRCodeModal";
-import { QrCode } from "lucide-react";
+import { QrCode, FileText } from "lucide-react";
 
 interface Article {
   id: string;
@@ -152,12 +152,25 @@ export default function AdminArticlesPage() {
               Gérez vos vêtements, éditez les prix, le stock et générez les codes QR.
             </p>
           </div>
-          <a
-            href="/admin/articles/new"
-            className="bg-or text-encre hover:bg-white font-bold py-3 px-6 rounded-full transition-all shadow-md flex items-center gap-2 text-sm"
-          >
-            <span>+ Ajouter un Article</span>
-          </a>
+          <div className="flex items-center gap-3">
+            <a
+              href={`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api"}/admin/export/qr-pdf`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-indigo-600/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-600 hover:text-white border border-indigo-600/20 font-bold py-3 px-5 rounded-full transition-all shadow-sm flex items-center gap-2 text-sm"
+              title="Télécharger la planche d'étiquettes A4 PDF pour vêtements"
+            >
+              <FileText className="w-4 h-4" />
+              <span>Imprimer Étiquettes QR (PDF)</span>
+            </a>
+
+            <a
+              href="/admin/articles/new"
+              className="bg-or text-encre hover:bg-white font-bold py-3 px-6 rounded-full transition-all shadow-md flex items-center gap-2 text-sm"
+            >
+              <span>+ Ajouter un Article</span>
+            </a>
+          </div>
         </div>
 
         {/* Barre de recherche */}

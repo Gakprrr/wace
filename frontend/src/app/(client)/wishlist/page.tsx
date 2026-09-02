@@ -113,7 +113,7 @@ export default function WishlistPage() {
                     href="/catalogue"
                     className="mt-4 bg-[#705C3B] hover:bg-[#5a4a2f] text-white font-bold text-xs py-2.5 px-6 rounded-full transition-colors"
                   >
-                    {t.wishlist.browseCatalogue}
+                    {t.wishlist.discover}
                   </a>
                 </div>
               ) : (
@@ -142,7 +142,7 @@ export default function WishlistPage() {
                         {article.stock === 0 && (
                           <div className="absolute inset-0 bg-encre/65 backdrop-blur-[2px] flex items-center justify-center">
                             <span className="bg-red-950/80 text-red-400 border border-red-800/40 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
-                              {t.wishlist.outOfStock}
+                              {t.catalogueItem.outOfStock}
                             </span>
                           </div>
                         )}
