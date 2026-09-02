@@ -56,7 +56,17 @@
   transition-duration: 150ms;
 }
 
-/* Form styles */
+/* Form styles & accessibility contrast fix */
+input, textarea, select {
+  color: #111827 !important;
+  background-color: #ffffff !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #6b7280 !important;
+  opacity: 1 !important;
+}
+
 input:focus, textarea:focus, select:focus {
   outline: 2px solid #C8A96E;
   outline-offset: 2px;
@@ -72,6 +82,7 @@ input:focus, textarea:focus, select:focus {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
 /* Loading animations */
 @keyframes pulse {
   0%, 100% {
@@ -119,13 +130,8 @@ input:focus, textarea:focus, select:focus {
   transition-duration: 150ms;
 }
 
-.btn-secondary:hover {
-  background-color: rgba(200, 169, 110, 0.3);
-}
-
 .btn-outline {
-  border-width: 2px;
-  border-color: #C8A96E;
+  border: 1px solid #C8A96E;
   color: #C8A96E;
   padding-left: 1.5rem;
   padding-right: 1.5rem;

@@ -111,7 +111,7 @@ export default function RegisterPage() {
                 onChange={(e) => setName(e.target.value)}
                 placeholder={t.auth.fullName}
                 required
-                className="w-full px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#d8b652] focus:border-transparent transition-all text-base font-medium"
+                className="w-full px-4 py-3 rounded-full border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d8b652] focus:border-transparent transition-all text-base font-semibold shadow-sm"
               />
             </div>
 
@@ -123,7 +123,7 @@ export default function RegisterPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={t.auth.email}
                 required
-                className="w-full px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#d8b652] focus:border-transparent transition-all text-base font-medium"
+                className="w-full px-4 py-3 rounded-full border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d8b652] focus:border-transparent transition-all text-base font-semibold shadow-sm"
               />
             </div>
 
@@ -137,7 +137,7 @@ export default function RegisterPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder={t.auth.password}
                     required
-                    className="w-full pl-4 pr-10 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#d8b652] focus:border-transparent transition-all text-base font-medium"
+                    className="w-full pl-4 pr-10 py-3 rounded-full border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d8b652] focus:border-transparent transition-all text-base font-semibold shadow-sm"
                   />
                   <button
                     type="button"
@@ -158,7 +158,7 @@ export default function RegisterPage() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder={t.auth.password}
                     required
-                    className="w-full pl-4 pr-10 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#d8b652] focus:border-transparent transition-all text-base font-medium"
+                    className="w-full pl-4 pr-10 py-3 rounded-full border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d8b652] focus:border-transparent transition-all text-base font-semibold shadow-sm"
                   />
                   <button
                     type="button"
