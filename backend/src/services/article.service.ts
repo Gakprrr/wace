@@ -306,7 +306,7 @@ export async function searchArticles(query: string) {
 }
 
 export async function getFeaturedArticles() {
-  return db.article.findMany({
+  const articles = await db.article.findMany({
     where: {
       OR: [{ isNew: true }, { stock: { lte: 2, gt: 0 } }],
       isAvailable: true,
@@ -319,4 +319,19 @@ export async function getFeaturedArticles() {
     take: 8,
     orderBy: { createdAt: "desc" },
   });
+
+  if (articles.length === 0) {
+    return db.article.findMany({
+      where: { isAvailable: true },
+      include: {
+        category: {
+          select: { id: true, name: true, slug: true },
+        },
+      },
+      take: 8,
+      orderBy: { createdAt: "desc" },
+    });
+  }
+
+  return articles;
 }
