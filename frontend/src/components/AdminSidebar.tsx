@@ -19,6 +19,7 @@ export default function AdminSidebar() {
 
   const links = [
     { label: t.admin.sidebar.dashboard, href: "/admin/dashboard", icon: "📊" },
+    { label: "Commandes", href: "/admin/orders", icon: "📦" },
     { label: t.admin.sidebar.articles, href: "/admin/articles", icon: "🧥" },
     { label: t.admin.sidebar.categories, href: "/admin/categories", icon: "📁" },
     { label: t.admin.sidebar.users, href: "/admin/users", icon: "👥" },

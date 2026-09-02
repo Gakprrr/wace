@@ -8,17 +8,15 @@ const router = Router();
 // GET /api/articles
 router.get("/", async (req, res) => {
   try {
-    const { category, search, page, limit, state, minPrice, maxPrice, sort } = req.query;
+    const { category, limit, offset, state, minPrice, maxPrice } = req.query;
     
     const result = await getArticles({
       categoryId: category as string,
-      search: search as string,
-      page: page ? parseInt(page as string, 10) : undefined,
       limit: limit ? parseInt(limit as string, 10) : undefined,
+      offset: offset ? parseInt(offset as string, 10) : undefined,
       state: state as any,
       minPrice: minPrice ? parseFloat(minPrice as string) : undefined,
       maxPrice: maxPrice ? parseFloat(maxPrice as string) : undefined,
-      sort: sort as any,
     });
 
     res.json(result);
@@ -31,8 +29,7 @@ router.get("/", async (req, res) => {
 // GET /api/articles/featured
 router.get("/featured", async (req, res) => {
   try {
-    const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 6;
-    const articles = await getFeaturedArticles(limit);
+    const articles = await getFeaturedArticles();
     res.json(articles);
   } catch (error) {
     const err = errorResponse(error);

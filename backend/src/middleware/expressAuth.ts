@@ -31,13 +31,13 @@ export async function authenticateToken(req: AuthenticatedRequest, res: Response
 
   if (token) {
     try {
-      const payload = await verifyToken(token);
+      const payload = await verifyToken(token) as any;
       if (payload) {
         req.user = {
-          id: payload.id as string,
+          id: (payload.id || payload.userId) as string,
           email: payload.email as string,
           role: payload.role as Role,
-          name: payload.name as string | null,
+          name: (payload.name as string) || null,
         };
       }
     } catch {

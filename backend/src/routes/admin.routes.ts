@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAdminStats } from "@/services/stats.service";
+import { getGlobalStats } from "@/services/stats.service";
 import { uploadImage } from "@/services/upload.service";
 import { db } from "@/db";
 import { requireAdminMiddleware } from "@/middleware/expressAuth";
@@ -14,7 +14,7 @@ router.use(requireAdminMiddleware);
 // GET /api/admin/stats
 router.get("/stats", async (req, res) => {
   try {
-    const stats = await getAdminStats();
+    const stats = await getGlobalStats();
     res.json(stats);
   } catch (error) {
     const err = errorResponse(error);

@@ -1,3 +1,4 @@
+import { Request, Response, NextFunction } from "express";
 import { redis } from "@/redis";
 
 interface RateLimitResult {
@@ -64,28 +65,25 @@ export async function checkRateLimit(
 }
 
 /**
- * Middleware helper: returns a 429 Response if rate-limited, or null if OK.
+ * Express middleware for Rate Limiting
  */
-export async function withRateLimit(
-  request: Request,
-  identifier: string,
-  maxRequests = 10,
-  windowSec = 60
-): Promise<Response | null> {
-  const result = await checkRateLimit(identifier, maxRequests, windowSec);
+export function expressRateLimit(maxRequests = 10, windowSec = 60) {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const ip = req.ip || req.socket.remoteAddress || "127.0.0.1";
+    const identifier = `${req.path}:${ip}`;
 
-  if (!result.success) {
-    return new Response(JSON.stringify({ error: "Too Many Requests" }), {
-      status: 429,
-      headers: {
-        "Content-Type": "application/json",
-        "X-RateLimit-Limit": String(result.limit),
-        "X-RateLimit-Remaining": String(result.remaining),
-        "X-RateLimit-Reset": String(result.reset),
-        "Retry-After": String(Math.ceil((result.reset - Date.now()) / 1000)),
-      },
-    });
-  }
+    const result = await checkRateLimit(identifier, maxRequests, windowSec);
 
-  return null;
+    res.setHeader("X-RateLimit-Limit", String(result.limit));
+    res.setHeader("X-RateLimit-Remaining", String(result.remaining));
+    res.setHeader("X-RateLimit-Reset", String(result.reset));
+
+    if (!result.success) {
+      res.setHeader("Retry-After", String(Math.ceil((result.reset - Date.now()) / 1000)));
+      res.status(429).json({ error: "Trop de requêtes, veuillez réessayer dans quelques instants." });
+      return;
+    }
+
+    next();
+  };
 }

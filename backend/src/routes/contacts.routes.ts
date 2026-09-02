@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getActiveSocialContacts, createSocialContact, updateSocialContact, deleteSocialContact } from "@/services/contact.service";
+import { getAllContacts, createContact, updateContact, deleteContact } from "@/services/contact.service";
 import { requireAdminMiddleware } from "@/middleware/expressAuth";
 import { errorResponse } from "@/utils/auth";
 
@@ -8,7 +8,7 @@ const router = Router();
 // GET /api/contacts
 router.get("/", async (req, res) => {
   try {
-    const contacts = await getActiveSocialContacts();
+    const contacts = await getAllContacts();
     res.json(contacts);
   } catch (error) {
     const err = errorResponse(error);
@@ -19,7 +19,7 @@ router.get("/", async (req, res) => {
 // POST /api/contacts (Admin)
 router.post("/", requireAdminMiddleware, async (req, res) => {
   try {
-    const contact = await createSocialContact(req.body);
+    const contact = await createContact(req.body);
     res.status(201).json(contact);
   } catch (error) {
     const err = errorResponse(error);
@@ -30,7 +30,7 @@ router.post("/", requireAdminMiddleware, async (req, res) => {
 // PUT /api/contacts/:id (Admin)
 router.put("/:id", requireAdminMiddleware, async (req, res) => {
   try {
-    const contact = await updateSocialContact(req.params.id, req.body);
+    const contact = await updateContact(req.params.id, req.body);
     res.json(contact);
   } catch (error) {
     const err = errorResponse(error);
@@ -41,7 +41,7 @@ router.put("/:id", requireAdminMiddleware, async (req, res) => {
 // DELETE /api/contacts/:id (Admin)
 router.delete("/:id", requireAdminMiddleware, async (req, res) => {
   try {
-    await deleteSocialContact(req.params.id);
+    await deleteContact(req.params.id);
     res.json({ success: true, message: "Contact supprimé" });
   } catch (error) {
     const err = errorResponse(error);

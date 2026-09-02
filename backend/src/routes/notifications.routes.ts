@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getUserNotifications, savePushSubscription, broadcastPushNotification } from "@/services/notification.service";
+import { getUserNotifications, subscribePushNotification, broadcastNotification } from "@/services/notification.service";
 import { AuthenticatedRequest, requireAuthMiddleware, requireAdminMiddleware } from "@/middleware/expressAuth";
 import { errorResponse } from "@/utils/auth";
 
@@ -20,7 +20,7 @@ router.get("/", requireAuthMiddleware, async (req: AuthenticatedRequest, res) =>
 router.post("/subscribe", requireAuthMiddleware, async (req: AuthenticatedRequest, res) => {
   try {
     const { subscription } = req.body;
-    await savePushSubscription(req.user!.id, subscription);
+    await subscribePushNotification(req.user!.id, subscription);
     res.status(201).json({ success: true, message: "Abonnement push enregistré" });
   } catch (error) {
     const err = errorResponse(error);
@@ -32,7 +32,7 @@ router.post("/subscribe", requireAuthMiddleware, async (req: AuthenticatedReques
 router.post("/push", requireAdminMiddleware, async (req, res) => {
   try {
     const { title, message } = req.body;
-    await broadcastPushNotification(title, message);
+    await broadcastNotification({ title, message, type: "SYSTEM" });
     res.json({ success: true, message: "Notification diffusée" });
   } catch (error) {
     const err = errorResponse(error);
