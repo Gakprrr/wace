@@ -5,10 +5,11 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/components/AuthProvider";
 import { useRouter } from "next/navigation";
-import { Heart, MessageCircle, ShoppingBag, Check } from "lucide-react";
+import { Heart, MessageCircle, ShoppingBag, Check, QrCode } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import ConfirmModal from "@/components/ConfirmModal";
 import AlertModal from "@/components/AlertModal";
+import QRCodeModal from "@/components/QRCodeModal";
 import { useLang } from "@/lib/i18n/LangProvider";
 
 interface Comment {
@@ -55,6 +56,7 @@ export default function ArticleDetailPage({ params }: { params: Promise<{ id: st
   const [likesCount, setLikesCount] = useState(0);
   const [userLiked, setUserLiked] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isQrOpen, setIsQrOpen] = useState(false);
 
   // New Comment Form States
   const [commentContent, setCommentContent] = useState("");
@@ -390,7 +392,7 @@ export default function ArticleDetailPage({ params }: { params: Promise<{ id: st
               </div>
             </div>
 
-            {/* CTA Order button */}
+            {/* CTA Order button & QR Code */}
             <div className="mt-12 flex flex-col sm:flex-row gap-4 items-center w-full">
               <button
                 onClick={() => {
@@ -407,7 +409,7 @@ export default function ArticleDetailPage({ params }: { params: Promise<{ id: st
                   }
                 }}
                 disabled={article.stock <= 0}
-                className={`w-full sm:w-1/2 text-center font-sans font-bold py-4 px-8 rounded-full transition-all shadow-md flex items-center justify-center space-x-2.5 ${
+                className={`w-full sm:flex-1 text-center font-sans font-bold py-4 px-6 rounded-full transition-all shadow-md flex items-center justify-center space-x-2 ${
                   article.stock > 0
                     ? added ? "bg-green-600 text-white" : "bg-[#d8b652] hover:bg-[#c3a242] text-white hover:scale-[1.02] active:scale-[0.98]"
                     : "bg-anthracite/25 border border-anthracite/45 text-encre/40 dark:text-encre dark:text-ivoire/40 cursor-not-allowed"
@@ -421,7 +423,7 @@ export default function ArticleDetailPage({ params }: { params: Promise<{ id: st
                 href={article.stock > 0 ? whatsappUrl : undefined}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`w-full sm:w-1/2 text-center font-sans font-bold py-4 px-8 rounded-full transition-all shadow-md flex items-center justify-center space-x-2.5 ${
+                className={`w-full sm:flex-1 text-center font-sans font-bold py-4 px-6 rounded-full transition-all shadow-md flex items-center justify-center space-x-2 ${
                   article.stock > 0
                     ? "bg-[#25D366] hover:bg-[#20ba56] text-white hover:scale-[1.02] active:scale-[0.98]"
                     : "bg-anthracite/25 border border-anthracite/45 text-encre/40 dark:text-encre dark:text-ivoire/40 cursor-not-allowed hidden"
@@ -430,9 +432,25 @@ export default function ArticleDetailPage({ params }: { params: Promise<{ id: st
                 <MessageCircle className="h-5 w-5" />
                 <span>{t.catalogueItem.quickBuy}</span>
               </a>
+
+              <button
+                onClick={() => setIsQrOpen(true)}
+                className="w-full sm:w-auto p-4 rounded-full bg-indigo-600/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-600 hover:text-white border border-indigo-600/20 transition-all flex items-center justify-center gap-2 font-bold text-sm"
+                title="Code QR du produit"
+              >
+                <QrCode className="h-5 w-5" />
+                <span className="sm:hidden">Code QR</span>
+              </button>
             </div>
           </div>
         </div>
+
+        <QRCodeModal
+          isOpen={isQrOpen}
+          articleId={article.id}
+          articleTitle={article.title}
+          onClose={() => setIsQrOpen(false)}
+        />
 
         {/* Comments / Review section */}
         <section className="mt-20 pt-12 border-t border-beige/65 dark:border-anthracite/60">
