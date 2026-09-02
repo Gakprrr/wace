@@ -176,5 +176,5 @@ input:focus, textarea:focus, select:focus {
 }
 
 .animate-marquee {
-  animation: marquee 35s linear infinite;
+  animation: marquee 80s linear infinite;
 }

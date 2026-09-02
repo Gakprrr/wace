@@ -79,12 +79,22 @@ export async function registerUser(data: {
 }
 
 export async function findUserByEmail(email: string) {
+  if (!email || typeof email !== "string") {
+    return null;
+  }
+  const cleanEmail = email.trim().toLowerCase();
+  if (!cleanEmail) {
+    return null;
+  }
   return db.user.findUnique({
-    where: { email },
+    where: { email: cleanEmail },
   });
 }
 
 export async function findUserById(id: string) {
+  if (!id || typeof id !== "string") {
+    return null;
+  }
   return db.user.findUnique({
     where: { id },
   });
