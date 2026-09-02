@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Globe } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
 import { useLang } from "@/lib/i18n/LangProvider";
+import Logo from "@/components/Logo";
 import Link from "next/link";
 
 export default function LoginPage() {
@@ -104,7 +105,7 @@ export default function LoginPage() {
         <div className="w-full md:w-1/2 p-6 md:p-12 flex flex-col justify-center">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-8">
-              <img src="/logo-simple.png" alt="WACE Logo" className="w-48 md:w-56 h-auto object-contain drop-shadow-md" />
+              <Logo className="w-48 md:w-56 h-auto" />
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
               {step === 1 ? t.auth.loginTitle : t.auth.verify2FA}

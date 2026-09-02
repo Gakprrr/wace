@@ -118,7 +118,7 @@ export default function HomePage() {
         <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
           <div className="w-full md:w-2/3 h-[400px] md:h-[500px] rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white dark:border-anthracite/60 group">
             <img 
-              src="/new-hero.png" 
+              src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=80" 
               alt="Wear The Energy Banner"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />

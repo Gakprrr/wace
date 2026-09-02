@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/AuthProvider";
 import { useLang } from "@/lib/i18n/LangProvider";
 import Link from "next/link";
+import Logo from "@/components/Logo";
 import { Eye, EyeOff, Globe } from "lucide-react";
 
 export default function RegisterPage() {
@@ -71,13 +72,13 @@ export default function RegisterPage() {
         {/* Left Side: Image */}
         <div className="w-full md:w-1/2 relative min-h-[300px] md:min-h-[500px] rounded-[1.5rem] overflow-hidden">
           <img
-            src="/register-bg.jpg"
+            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80"
             alt="Fashion layout"
             className="absolute inset-0 w-full h-full object-cover"
           />
           {/* Logo Overlay */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/20">
-            <img src="/logo-simple.png" alt="WACE Logo" className="w-[85%] max-w-[300px] object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px]">
+            <Logo className="w-[85%] max-w-[300px]" />
           </div>
         </div>
 
@@ -85,7 +86,7 @@ export default function RegisterPage() {
         <div className="w-full md:w-1/2 p-6 md:p-12 flex flex-col justify-center">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-8">
-              <img src="/logo-simple.png" alt="WACE Logo" className="w-48 md:w-56 h-auto object-contain drop-shadow-md" />
+              <Logo className="w-48 md:w-56 h-auto" />
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
               {t.auth.registerTitle}

@@ -95,12 +95,12 @@ export default function HomePageClient({ featuredArticles }: HomePageClientProps
 
           <div className="w-full md:w-[35%] h-[75%] md:h-[85%] relative rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.2)] border-4 border-white/80 z-20 transform hover:scale-[1.02] transition-transform duration-500">
             <Image
-              src="/true.jpg"
+              src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80"
               alt={t.home.newCollection}
               fill
               className="object-cover object-center"
               priority
-              quality={100}
+              unoptimized
             />
           </div>
 

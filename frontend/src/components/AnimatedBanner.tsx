@@ -32,7 +32,7 @@ export default function AnimatedBanner() {
           }`}
         >
           <img 
-            src="/image.png" 
+            src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80" 
             alt="Wear The Energy Banner"
             className="w-full h-full object-cover object-bottom scale-110 group-hover:scale-125 transition-transform duration-700"
           />

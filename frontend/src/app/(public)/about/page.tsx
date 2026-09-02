@@ -18,11 +18,12 @@ export default function AboutPage() {
         <section className="relative w-full h-[35vh] sm:h-[40vh] min-h-[300px] bg-encre text-ivoire flex flex-col justify-center items-center overflow-hidden rounded-[2.5rem] border border-[#d8b652]/50 shadow-2xl shadow-[#d8b652]/10 ring-8 ring-[#d8b652]/5">
           {/* Background Image */}
           <Image
-            src="/equipe.jpg"
+            src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=80"
             alt="L'Âme du Vintage"
             fill
             className="object-cover"
             priority
+            unoptimized
           />
           {/* Dark Overlay for text readability */}
           <div className="absolute inset-0 bg-encre/70 backdrop-blur-[3px]"></div>
