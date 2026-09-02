@@ -2,6 +2,17 @@ import Redis from "ioredis";
 
 const redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
 
+const redisOptions = {
+  maxRetriesPerRequest: 1,
+  enableOfflineQueue: false,
+  retryStrategy(times: number) {
+    if (times > 3) {
+      return null; // Stopper les tentatives de reconnexion après 3 essais en dev
+    }
+    return Math.min(times * 100, 2000);
+  },
+};
+
 const globalForRedis = globalThis as unknown as {
   redis: Redis | undefined;
   redisSub: Redis | undefined;
@@ -12,37 +23,37 @@ const globalForRedis = globalThis as unknown as {
 let redisClient: Redis;
 
 if (process.env.NODE_ENV === "production") {
-  redisClient = new Redis(redisUrl, { maxRetriesPerRequest: 3 });
+  redisClient = new Redis(redisUrl, redisOptions);
 } else {
   if (!globalForRedis.redis) {
-    globalForRedis.redis = new Redis(redisUrl, { maxRetriesPerRequest: 3 });
+    globalForRedis.redis = new Redis(redisUrl, redisOptions);
   }
   redisClient = globalForRedis.redis;
 }
 
+let loggedError = false;
 redisClient.on("error", (err) => {
-  console.warn("Redis client error (check if Docker/Redis is running):", err.message);
+  if (!loggedError) {
+    console.warn("⚠️ Redis hors-ligne (Le rate-limiting et les notifications SSE tourneront sans Redis) :", err.message);
+    loggedError = true;
+  }
 });
 
 export const redis = redisClient;
 
 // ── Shared SSE subscriber (one connection for all SSE clients) ────────────────
-// A Redis connection in subscribe mode cannot issue regular commands.
-// Re-using one subscriber for all SSE streams avoids opening N connections.
 
 let redisSubClient: Redis;
 
 if (process.env.NODE_ENV === "production") {
-  redisSubClient = new Redis(redisUrl, { maxRetriesPerRequest: 3 });
+  redisSubClient = new Redis(redisUrl, redisOptions);
 } else {
   if (!globalForRedis.redisSub) {
-    globalForRedis.redisSub = new Redis(redisUrl, { maxRetriesPerRequest: 3 });
+    globalForRedis.redisSub = new Redis(redisUrl, redisOptions);
   }
   redisSubClient = globalForRedis.redisSub;
 }
 
-redisSubClient.on("error", (err) => {
-  console.warn("Redis subscriber error:", err.message);
-});
+redisSubClient.on("error", () => {});
 
 export const redisSub = redisSubClient;
