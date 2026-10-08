@@ -6,10 +6,10 @@ import { Role } from "@prisma/client";
 
 const router = Router();
 
-// GET /api/comments/article
-router.get("/article", async (req, res) => {
+// GET /api/comments/article or /api/comments/article/:articleId
+router.get(["/article", "/article/:articleId"], async (req, res) => {
   try {
-    const articleId = req.query.articleId as string;
+    const articleId = (req.params.articleId || req.query.articleId) as string;
     if (!articleId) {
       res.status(400).json({ error: "L'identifiant de l'article est requis" });
       return;

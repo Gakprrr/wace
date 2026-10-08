@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "default_super_secret_key_change_me_in_production"
+  process.env.JWT_SECRET || "wace_dev_jwt_secret_key_2026_super_secure_key"
 );
 
 // Paths that require authentication

@@ -54,9 +54,13 @@ export default function AdminDashboard() {
   useEffect(() => {
     async function loadStats() {
       try {
-        const statsRes = await fetch("/api/admin/stats");
-        const articlesRes = await fetch("/api/admin/stats/articles");
-        const usersRes = await fetch("/api/admin/stats/users");
+        const token = typeof window !== "undefined" ? localStorage.getItem("wace_token") : null;
+        const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+        const fetchOpts: RequestInit = { credentials: "include", headers };
+
+        const statsRes = await fetch("/api/admin/stats", fetchOpts);
+        const articlesRes = await fetch("/api/admin/stats/articles", fetchOpts);
+        const usersRes = await fetch("/api/admin/stats/users", fetchOpts);
 
         if (statsRes.ok && articlesRes.ok && usersRes.ok) {
           const statsData = await statsRes.json();
@@ -88,10 +92,14 @@ export default function AdminDashboard() {
       const res = await fetch(`/api/admin/articles/${articleId}/comments`);
       if (res.ok) {
         const data = await res.json();
-        setCommentsList(data.comments);
+        const list = Array.isArray(data) ? data : (data.comments || []);
+        setCommentsList(list);
+      } else {
+        setCommentsList([]);
       }
     } catch (err) {
       console.error(err);
+      setCommentsList([]);
     } finally {
       setCommentsLoading(false);
     }
@@ -198,20 +206,27 @@ export default function AdminDashboard() {
                 <p className="text-encre/60 dark:text-ivoire/60 text-xs font-semibold mb-2">Inscriptions (7 derniers jours)</p>
                 <div className="flex items-end gap-2 h-24 w-full mt-2">
                   {(() => {
+                    const entries = Object.entries(userStats.registrationsByDay);
                     const maxCount = Math.max(1, ...Object.values(userStats.registrationsByDay));
-                    return Object.entries(userStats.registrationsByDay).map(([day, count]) => (
-                      <div key={day} className="flex flex-col items-center flex-1 gap-1 group h-full justify-end">
-                        <div 
-                          className="w-full bg-or rounded-t-md transition-all relative group-hover:bg-or/80 shadow-sm" 
-                          style={{ height: `${Math.max((count / maxCount) * 100, 8)}%` }}
-                        >
-                          <span className="absolute -top-7 left-1/2 -translate-x-1/2 bg-encre text-white text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                            {count} inscrits
-                          </span>
+                    return entries.map(([day, count]) => {
+                      const hasRegistrations = count > 0;
+                      const heightPercent = hasRegistrations ? Math.max((count / maxCount) * 100, 15) : 6;
+                      return (
+                        <div key={day} className="flex flex-col items-center flex-1 gap-1 group h-full justify-end">
+                          <div 
+                            className={`w-3 sm:w-4 mx-auto rounded-t-md transition-all relative group-hover:scale-110 shadow-sm ${
+                              hasRegistrations ? "bg-or group-hover:bg-or/80" : "bg-or/20"
+                            }`} 
+                            style={{ height: `${heightPercent}%` }}
+                          >
+                            <span className="absolute -top-7 left-1/2 -translate-x-1/2 bg-encre text-white text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 pointer-events-none">
+                              {count} inscrit{count > 1 ? "s" : ""}
+                            </span>
+                          </div>
+                          <span className="text-[10px] font-medium text-encre/70 dark:text-ivoire/70 mt-1">{day.slice(-2)}</span>
                         </div>
-                        <span className="text-[10px] font-medium text-encre/70 dark:text-ivoire/70 mt-1">{day.slice(-2)}</span>
-                      </div>
-                    ));
+                      );
+                    });
                   })()}
                   {Object.keys(userStats.registrationsByDay).length === 0 && (
                     <p className="text-xs text-encre/40 dark:text-ivoire/40 mt-auto mb-auto w-full text-center">Aucune nouvelle inscription</p>
@@ -331,14 +346,14 @@ export default function AdminDashboard() {
                 <div className="flex justify-center items-center py-12">
                   <div className="animate-spin text-4xl text-or">⏳</div>
                 </div>
-              ) : commentsList.length === 0 ? (
+              ) : (!commentsList || commentsList.length === 0) ? (
                 <div className="text-center py-12 text-encre/50 dark:text-ivoire/50">
                   <span className="text-3xl block mb-3">👻</span>
                   Aucun commentaire pour cet article.
                 </div>
               ) : (
                 <div className="flex flex-col gap-4">
-                  {commentsList.map((comment, i) => (
+                  {(commentsList || []).map((comment, i) => (
                     <div key={i} className="bg-gray-50 dark:bg-anthracite/80 p-4 rounded-2xl border border-beige/20 dark:border-anthracite/40">
                       <div className="flex justify-between items-start mb-2">
                         <div className="flex items-center gap-2">

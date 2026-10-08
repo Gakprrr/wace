@@ -31,10 +31,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const refreshSession = async () => {
     try {
-      const res = await fetch("/api/auth/session");
+      const token = typeof window !== "undefined" ? localStorage.getItem("wace_token") : null;
+      const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+      const res = await fetch("/api/auth/session", { credentials: "include", headers });
       if (res.ok) {
         const data = await res.json();
-        if (data.authenticated && data.user) {
+        if (data.user && data.user.id) {
           setUser(data.user);
         } else {
           setUser(null);

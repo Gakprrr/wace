@@ -33,7 +33,13 @@ describe("getGlobalStats", () => {
     const s = await getGlobalStats();
     expect(s).toEqual({ totalArticles: 10, totalUsers: 5, totalViews: 250, totalLikes: 30, totalComments: 15, newUsersToday: 2 });
   });
+});
 
+describe("getUserStats", () => {
+  it("groups user registrations by day", async () => {
+    (db.user.findMany as any).mockResolvedValue([
+      { createdAt: new Date("2025-06-10T10:00:00Z") },
+      { createdAt: new Date("2025-06-10T14:00:00Z") },
       { createdAt: new Date("2025-06-11T09:00:00Z") },
     ]);
     const s = await getUserStats();

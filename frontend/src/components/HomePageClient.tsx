@@ -1,8 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/components/AuthProvider";
 import { useLang } from "@/lib/i18n/LangProvider";
 import HeroSearch from "@/components/HeroSearch";
 import AnimatedBanner from "@/components/AnimatedBanner";
@@ -45,6 +47,60 @@ interface HomePageClientProps {
 
 export default function HomePageClient({ featuredArticles }: HomePageClientProps) {
   const { t, locale } = useLang();
+  const { user } = useAuth();
+  const router = useRouter();
+  const [likedArticleIds, setLikedArticleIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function fetchUserLikes() {
+      if (!user) return;
+      try {
+        const token = typeof window !== "undefined" ? localStorage.getItem("wace_token") : null;
+        const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+        const res = await fetch("/api/users/me/likes", { credentials: "include", headers });
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data)) {
+            setLikedArticleIds(data.map((art: any) => art.id));
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load user likes:", err);
+      }
+    }
+    fetchUserLikes();
+  }, [user]);
+
+  const handleHeartClick = async (e: React.MouseEvent, articleId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    try {
+      const token = typeof window !== "undefined" ? localStorage.getItem("wace_token") : null;
+      const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+      const res = await fetch(`/api/articles/${articleId}/like`, {
+        method: "POST",
+        credentials: "include",
+        headers,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.liked) {
+          setLikedArticleIds((prev) => [...prev, articleId]);
+        } else {
+          setLikedArticleIds((prev) => prev.filter((id) => id !== articleId));
+        }
+      }
+    } catch (err) {
+      console.error("Error toggling like:", err);
+    }
+  };
 
   return (
     <main className="flex-1 w-[95%] mx-auto relative flex flex-col px-4 sm:px-6 lg:px-8 mt-6">
@@ -240,8 +296,13 @@ export default function HomePageClient({ featuredArticles }: HomePageClientProps
                       📷
                     </div>
                   )}
-                  <button className="absolute top-3 right-3 bg-white/80 backdrop-blur p-2 rounded-full text-gray-400 hover:text-red-500 transition-colors">
-                    <Heart className="h-5 w-5" />
+                  <button
+                    type="button"
+                    onClick={(e) => handleHeartClick(e, article.id)}
+                    className="absolute top-3 right-3 bg-white/80 backdrop-blur p-2 rounded-full transition-colors z-10 hover:scale-110"
+                    title={likedArticleIds.includes(article.id) ? "Je n'aime plus" : "J'aime"}
+                  >
+                    <Heart className={`h-5 w-5 transition-colors ${likedArticleIds.includes(article.id) ? "fill-red-500 text-red-500" : "text-gray-400 hover:text-red-500"}`} />
                   </button>
                 </div>
 

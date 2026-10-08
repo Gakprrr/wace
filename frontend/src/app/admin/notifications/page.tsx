@@ -16,6 +16,13 @@ export default function AdminNotificationsPage() {
   const [subject, setSubject] = useState("");
   const [htmlContent, setHtmlContent] = useState("");
 
+  const getFetchOpts = (extra: RequestInit = {}): RequestInit => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("wace_token") : null;
+    const headers = new Headers(extra.headers || {});
+    if (token) headers.set("Authorization", `Bearer ${token}`);
+    return { ...extra, headers, credentials: "include" };
+  };
+
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (submitting) return;
@@ -58,11 +65,11 @@ export default function AdminNotificationsPage() {
     }
 
     try {
-      const res = await fetch(endpoint, {
+      const res = await fetch(endpoint, getFetchOpts({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
-      });
+      }));
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Une erreur est survenue.");

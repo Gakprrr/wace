@@ -34,8 +34,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           if (!res.ok) return null;
 
-          const data = await res.json();
-          if (data.user) {
+          const text = await res.text();
+          let data: any;
+          try {
+            data = JSON.parse(text);
+          } catch {
+            return null;
+          }
+
+          if (data && data.user) {
             return {
               id: data.user.id,
               email: data.user.email,
@@ -52,6 +59,27 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     })
   ],
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === "google" && user.email) {
+        try {
+          const res = await fetch(`${API_URL}/auth/google`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: user.email, name: user.name }),
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.user) {
+              (user as any).id = data.user.id;
+              (user as any).role = data.user.role;
+            }
+          }
+        } catch (err) {
+          console.error("Google sync error:", err);
+        }
+      }
+      return true;
+    },
     async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id

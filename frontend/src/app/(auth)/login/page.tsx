@@ -30,6 +30,7 @@ export default function LoginPage() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 
@@ -39,14 +40,19 @@ export default function LoginPage() {
         throw new Error(data.error || "Erreur de connexion");
       }
 
-      if (data.requires2FA) {
+      if (data.requireTwoFactor || data.requires2FA) {
         setStep(2);
       } else {
+        if (data.token && typeof document !== "undefined") {
+          document.cookie = `token=${data.token}; path=/; max-age=604800; SameSite=Lax`;
+          localStorage.setItem("wace_token", data.token);
+        }
         login(data.user);
-        if (data.user.role === "ADMIN") {
-          router.push("/admin/dashboard");
+        const targetUrl = data.user.role === "ADMIN" ? "/admin/dashboard" : "/";
+        if (typeof window !== "undefined") {
+          window.location.href = targetUrl;
         } else {
-          router.push("/");
+          router.push(targetUrl);
         }
       }
     } catch (err: any) {
@@ -67,6 +73,7 @@ export default function LoginPage() {
       const res = await fetch("/api/auth/2fa/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ email, code: code2FA }),
       });
 
@@ -76,11 +83,17 @@ export default function LoginPage() {
         throw new Error(data.error || "Code invalide");
       }
 
+      if (data.token && typeof document !== "undefined") {
+        document.cookie = `token=${data.token}; path=/; max-age=604800; SameSite=Lax`;
+        localStorage.setItem("wace_token", data.token);
+      }
+
       login(data.user);
-      if (data.user.role === "ADMIN") {
-        router.push("/admin/dashboard");
+      const targetUrl = data.user.role === "ADMIN" ? "/admin/dashboard" : "/";
+      if (typeof window !== "undefined") {
+        window.location.href = targetUrl;
       } else {
-        router.push("/");
+        router.push(targetUrl);
       }
     } catch (err: any) {
       setError(err.message || "Code invalide");
@@ -105,7 +118,9 @@ export default function LoginPage() {
         <div className="w-full md:w-1/2 p-6 md:p-12 flex flex-col justify-center">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-8">
-              <Logo className="w-48 md:w-56 h-auto" />
+              <Link href="/" title="Retour à l'accueil" className="cursor-pointer hover:opacity-90 transition-opacity">
+                <Logo className="w-48 md:w-56 h-auto" />
+              </Link>
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
               {step === 1 ? t.auth.loginTitle : t.auth.verify2FA}

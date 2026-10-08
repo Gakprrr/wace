@@ -6,8 +6,9 @@ import Link from "next/link";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import { useLang } from "@/lib/i18n/LangProvider";
+import { useAuth } from "@/components/AuthProvider";
 
 interface Article {
   id: string;
@@ -37,6 +38,59 @@ function CatalogueContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t, locale } = useLang();
+  const { user } = useAuth();
+  const [likedArticleIds, setLikedArticleIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function fetchUserLikes() {
+      if (!user) return;
+      try {
+        const token = typeof window !== "undefined" ? localStorage.getItem("wace_token") : null;
+        const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+        const res = await fetch("/api/users/me/likes", { credentials: "include", headers });
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data)) {
+            setLikedArticleIds(data.map((art: any) => art.id));
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load user likes:", err);
+      }
+    }
+    fetchUserLikes();
+  }, [user]);
+
+  const handleHeartClick = async (e: React.MouseEvent, articleId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    try {
+      const token = typeof window !== "undefined" ? localStorage.getItem("wace_token") : null;
+      const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+      const res = await fetch(`/api/articles/${articleId}/like`, {
+        method: "POST",
+        credentials: "include",
+        headers,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.liked) {
+          setLikedArticleIds((prev) => [...prev, articleId]);
+        } else {
+          setLikedArticleIds((prev) => prev.filter((id) => id !== articleId));
+        }
+      }
+    } catch (err) {
+      console.error("Error toggling like:", err);
+    }
+  };
 
   // Filter States
   const [search, setSearch] = useState(searchParams.get("search") || "");
@@ -80,7 +134,7 @@ function CatalogueContent() {
         if (minPrice) query.set("minPrice", minPrice);
         if (maxPrice) query.set("maxPrice", maxPrice);
         query.set("page", String(page));
-        query.set("limit", "12");
+        query.set("limit", "24");
 
         const res = await fetch(`/api/articles?${query.toString()}`);
         if (res.ok) {
@@ -122,7 +176,7 @@ function CatalogueContent() {
     { label: t.catalogue.conditions.USE_VINTAGE, value: "USE_VINTAGE" },
   ];
 
-  const totalPages = Math.ceil(total / 12);
+  const totalPages = Math.ceil(total / 24);
 
   const handleResetFilters = () => {
     setSearch("");
@@ -271,6 +325,14 @@ function CatalogueContent() {
                         {article.state.replace(/_/g, " ")}
                       </span>
                     </div>
+                    <button
+                      type="button"
+                      onClick={(e) => handleHeartClick(e, article.id)}
+                      className="absolute top-3 right-3 bg-white/80 dark:bg-black/50 backdrop-blur p-2 rounded-full transition-all z-10 hover:scale-110 shadow-sm"
+                      title={likedArticleIds.includes(article.id) ? "Je n'aime plus" : "J'aime"}
+                    >
+                      <Heart className={`h-4 w-4 transition-colors ${likedArticleIds.includes(article.id) ? "fill-red-500 text-red-500" : "text-gray-400 dark:text-gray-300 hover:text-red-500"}`} />
+                    </button>
                     {article.stock === 0 && (
                       <div className="absolute inset-0 bg-encre/65 backdrop-blur-[2px] flex items-center justify-center">
                         <span className="bg-red-950/80 text-red-400 border border-red-800/40 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full">

@@ -106,6 +106,9 @@ describe("GET /api/categories/[idOrSlug]", () => {
 describe("PUT /api/categories/[idOrSlug]", () => {
   it("returns 401 without auth", async () => {
     const res = await updateHandler(makeRequest("PUT", "/api/categories/c1", { body: { name: "X" } }), { params: params("c1") });
+    expect(res.status).toBe(401);
+  });
+
   it("returns 200 on success (admin)", async () => {
     const token = await generateToken({ userId: "a1", email: "a@a.com", role: Role.ADMIN });
     (db.category.findUnique as any).mockResolvedValue(makeCategory());

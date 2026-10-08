@@ -87,6 +87,7 @@ interface GetArticlesFilters {
   isAvailable?: boolean;
   limit?: number;
   offset?: number;
+  search?: string;
 }
 
 export async function getArticles(filters?: GetArticlesFilters) {
@@ -98,6 +99,13 @@ export async function getArticles(filters?: GetArticlesFilters) {
   
   if (filters?.categorySlug) {
     where.category = { slug: filters.categorySlug };
+  }
+
+  if (filters?.search) {
+    where.OR = [
+      { title: { contains: filters.search, mode: "insensitive" } },
+      { description: { contains: filters.search, mode: "insensitive" } },
+    ];
   }
 
   if (filters?.state) {
@@ -308,7 +316,6 @@ export async function searchArticles(query: string) {
 export async function getFeaturedArticles() {
   const articles = await db.article.findMany({
     where: {
-      OR: [{ isNew: true }, { stock: { lte: 2, gt: 0 } }],
       isAvailable: true,
     },
     include: {
@@ -316,22 +323,9 @@ export async function getFeaturedArticles() {
         select: { id: true, name: true, slug: true },
       },
     },
-    take: 8,
+    take: 36,
     orderBy: { createdAt: "desc" },
   });
-
-  if (articles.length === 0) {
-    return db.article.findMany({
-      where: { isAvailable: true },
-      include: {
-        category: {
-          select: { id: true, name: true, slug: true },
-        },
-      },
-      take: 8,
-      orderBy: { createdAt: "desc" },
-    });
-  }
 
   return articles;
 }

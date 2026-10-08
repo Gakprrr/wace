@@ -1,4 +1,4 @@
-x`version: "3.9"
+version: "3.9"
 
 services:
   backend:
@@ -43,7 +43,7 @@ services:
     container_name: wace_postgres
     environment:
       POSTGRES_USER: wace
-      POSTGRES_PASSWORD: wace_secure_pwd
+      POSTGRES_PASSWORD: wace123
       POSTGRES_DB: wacedb
     ports: [ "5434:5432" ]
     volumes: [ pgdata:/var/lib/postgresql/data ]
@@ -57,11 +57,13 @@ services:
   redis:
     image: redis:7-alpine
     container_name: wace_redis
-    command: redis-server --requirepass ${REDIS_PASSWORD} --maxmemory 256mb
+    environment:
+      REDIS_PASSWORD: wace_redis_pass_2026
+    command: redis-server --requirepass wace_redis_pass_2026 --maxmemory 256mb
     ports: [ "6381:6379" ]
     volumes: [ redisdata:/data ]
     healthcheck:
-      test: [ "CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD}", "ping" ]
+      test: [ "CMD", "redis-cli", "-a", "wace_redis_pass_2026", "ping" ]
       interval: 10s
     networks: [ wace_network ]
 

@@ -86,7 +86,9 @@ export default function RegisterPage() {
         <div className="w-full md:w-1/2 p-6 md:p-12 flex flex-col justify-center">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-8">
-              <Logo className="w-48 md:w-56 h-auto" />
+              <Link href="/" title="Retour à l'accueil" className="cursor-pointer hover:opacity-90 transition-opacity">
+                <Logo className="w-48 md:w-56 h-auto" />
+              </Link>
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
               {t.auth.registerTitle}

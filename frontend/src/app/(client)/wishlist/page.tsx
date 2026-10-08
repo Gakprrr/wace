@@ -26,7 +26,9 @@ export default function WishlistPage() {
 
   const loadLikes = async () => {
     try {
-      const res = await fetch("/api/users/me/likes");
+      const token = typeof window !== "undefined" ? localStorage.getItem("wace_token") : null;
+      const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+      const res = await fetch("/api/users/me/likes", { credentials: "include", headers });
       if (res.ok) {
         const data = await res.json();
         setLikedArticles(data || []);

@@ -69,7 +69,7 @@ export default function Footer() {
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5v3a3 3 0 0 1-3-3v11a7 7 0 1 1-7-7v3a4 4 0 0 0-4 4z"/></svg>
               </Link>
               {/* WhatsApp */}
-              <Link href="https://wa.me/22890383389" className="hover:text-green-600 hover:scale-110 transition-all" title="WhatsApp">
+              <Link href="https://wa.me/22870156109" className="hover:text-green-600 hover:scale-110 transition-all" title="WhatsApp">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><path d="M16.5 16c0 1.2-1.3 2.5-2.5 2.5-3.6 0-6.5-2.9-6.5-6.5C7.5 10.8 8.8 9.5 10 9.5c.3 0 .6.1.8.3.4.4.4 1 .2 1.4l-1.2 2c-.2.4-.1.8.2 1.2 1 1 2.2 2 3.2 3.2.4.3.8.4 1.2.2l2-1.2c.4-.2 1-.2 1.4.2.2.2.3.5.3.8z"/></svg>
               </Link>
             </div>

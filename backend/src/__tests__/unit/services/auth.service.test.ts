@@ -8,7 +8,7 @@ import { makeUser } from "../../setup/mocks";
 
 vi.mock("@/db", () => ({
   db: {
-    user: { findUnique: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), count: vi.fn() },
+    user: { findUnique: vi.fn(), findFirst: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), count: vi.fn() },
     article: { findUnique: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), count: vi.fn(), aggregate: vi.fn() },
     category: { findUnique: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn() },
     comment: { findUnique: vi.fn(), findMany: vi.fn(), create: vi.fn(), update: vi.fn(), delete: vi.fn(), count: vi.fn() },
@@ -125,11 +125,13 @@ describe("registerUser", () => {
 
 describe("findUserByEmail", () => {
   it("returns user", async () => {
+    (db.user.findFirst as any).mockResolvedValue(makeUser());
     (db.user.findUnique as any).mockResolvedValue(makeUser());
     expect(await findUserByEmail("test@wace.com")).toBeDefined();
   });
 
   it("returns null when not found", async () => {
+    (db.user.findFirst as any).mockResolvedValue(null);
     (db.user.findUnique as any).mockResolvedValue(null);
     expect(await findUserByEmail("ghost@wace.com")).toBeNull();
   });

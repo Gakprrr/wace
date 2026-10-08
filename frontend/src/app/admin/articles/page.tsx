@@ -36,9 +36,16 @@ export default function AdminArticlesPage() {
   const [alertState, setAlertState] = useState({ isOpen: false, message: "" });
   const showAlert = (message: string) => setAlertState({ isOpen: true, message });
 
+  const getFetchOpts = (extra: RequestInit = {}): RequestInit => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("wace_token") : null;
+    const headers = new Headers(extra.headers || {});
+    if (token) headers.set("Authorization", `Bearer ${token}`);
+    return { ...extra, headers, credentials: "include" };
+  };
+
   const loadArticles = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api"}/articles?limit=100`);
+      const res = await fetch("/api/articles?limit=100", getFetchOpts());
       if (res.ok) {
         const data = await res.json();
         setArticles(data.articles || []);
@@ -62,9 +69,9 @@ export default function AdminArticlesPage() {
   const executeDelete = async () => {
     if (!artToDelete) return;
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api"}/articles/${artToDelete.id}`, {
+      const res = await fetch(`/api/articles/${artToDelete.id}`, getFetchOpts({
         method: "DELETE",
-      });
+      }));
       if (res.ok) {
         setArticles(articles.filter((a) => a.id !== artToDelete.id));
       } else {
@@ -95,14 +102,13 @@ export default function AdminArticlesPage() {
     }
 
     try {
-      const endpoint = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api"}/articles/${id}`;
       const payload = field === 'price' ? { price: numValue } : { stock: numValue };
 
-      const res = await fetch(endpoint, {
+      const res = await fetch(`/api/articles/${id}`, getFetchOpts({
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
-      });
+      }));
 
       if (res.ok) {
         setArticles(articles.map(a => a.id === id ? { ...a, [field]: numValue } : a));

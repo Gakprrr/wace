@@ -97,7 +97,9 @@ export default function ArticleDetailPage({ params }: { params: Promise<{ id: st
 
     async function loadLikes() {
       try {
-        const res = await fetch(`/api/articles/${id}/like`);
+        const token = typeof window !== "undefined" ? localStorage.getItem("wace_token") : null;
+        const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+        const res = await fetch(`/api/articles/${id}/like`, { credentials: "include", headers });
         if (res.ok) {
           const data = await res.json();
           setLikesCount(data.count);
@@ -132,7 +134,13 @@ export default function ArticleDetailPage({ params }: { params: Promise<{ id: st
     }
 
     try {
-      const res = await fetch(`/api/articles/${id}/like`, { method: "POST" });
+      const token = typeof window !== "undefined" ? localStorage.getItem("wace_token") : null;
+      const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+      const res = await fetch(`/api/articles/${id}/like`, {
+        method: "POST",
+        credentials: "include",
+        headers,
+      });
       if (res.ok) {
         const data = await res.json();
         setUserLiked(data.liked);
@@ -156,6 +164,7 @@ export default function ArticleDetailPage({ params }: { params: Promise<{ id: st
       const res = await fetch("/api/comments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({
           content: commentContent,
           rating: commentRating,
@@ -165,7 +174,6 @@ export default function ArticleDetailPage({ params }: { params: Promise<{ id: st
 
       if (res.ok) {
         const newComment = await res.json();
-        // Append newly created comment to comments list
         setComments((prev) => [
           {
             id: newComment.id,
@@ -174,17 +182,22 @@ export default function ArticleDetailPage({ params }: { params: Promise<{ id: st
             createdAt: newComment.createdAt,
             userId: user.id,
             user: {
-              name: user.name,
-              avatar: user.avatar,
+              name: newComment.user?.name || user.name,
+              avatar: newComment.user?.avatar || user.avatar,
             },
           },
           ...prev,
         ]);
         setCommentContent("");
         setCommentRating(5);
+        showAlert("Votre avis a bien été publié !");
+      } else {
+        const data = await res.json().catch(() => ({}));
+        showAlert(data.error || "Erreur lors de la publication de l'avis.");
       }
     } catch (err) {
       console.error("Comment submit error:", err);
+      showAlert("Erreur réseau.");
     } finally {
       setSubmittingComment(false);
     }
@@ -264,7 +277,7 @@ export default function ArticleDetailPage({ params }: { params: Promise<{ id: st
 
   // WhatsApp Pre-filled text URL
   const contactText = `Bonjour WACE, je suis intéressé par l'article "${article.title}" (ID: ${article.id}) affiché à ${article.price.toLocaleString("fr-FR")} FCFA. Est-il toujours disponible ?`;
-  const whatsappUrl = `https://wa.me/22890000000?text=${encodeURIComponent(contactText)}`;
+  const whatsappUrl = `https://wa.me/22870156109?text=${encodeURIComponent(contactText)}`;
 
   return (
     <div className="flex flex-col min-h-screen bg-ivoire text-encre dark:bg-encre dark:text-encre dark:text-ivoire font-sans">

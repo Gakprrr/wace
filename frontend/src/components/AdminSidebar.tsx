@@ -6,12 +6,12 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "./AuthProvider";
 import { useLang } from "@/lib/i18n/LangProvider";
 import Logo from "./Logo";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, LogOut } from "lucide-react";
 import AdminProfileModal from "./AdminProfileModal";
 
 export default function AdminSidebar() {
   const pathname = usePathname();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { t } = useLang();
   
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -81,7 +81,7 @@ export default function AdminSidebar() {
       {/* Admin details footer */}
       <div 
         onClick={() => setIsProfileModalOpen(true)}
-        className={`mb-6 mt-4 flex items-center bg-white/10 hover:bg-white/20 border border-white/20 rounded-full cursor-pointer transition-all duration-300 ${isCollapsed ? "mx-3 p-2 justify-center" : "mx-5 p-3 space-x-3"}`}
+        className={`mt-4 flex items-center bg-white/10 hover:bg-white/20 border border-white/20 rounded-full cursor-pointer transition-all duration-300 ${isCollapsed ? "mx-3 p-2 justify-center mb-2" : "mx-5 p-3 space-x-3 mb-2"}`}
       >
         {user?.avatar ? (
           <img src={user.avatar} alt="" className="w-10 h-10 rounded-full object-cover shrink-0" />
@@ -97,6 +97,18 @@ export default function AdminSidebar() {
           </div>
         )}
       </div>
+
+      {/* Logout button */}
+      <button
+        onClick={logout}
+        className={`mb-6 flex items-center bg-red-500/20 hover:bg-red-500/40 border border-red-400/30 rounded-full text-white cursor-pointer transition-all duration-300 ${
+          isCollapsed ? "mx-3 p-3 justify-center" : "mx-5 px-4 py-3 space-x-3"
+        }`}
+        title="Se déconnecter"
+      >
+        <LogOut size={18} className="shrink-0" />
+        {!isCollapsed && <span className="text-sm font-bold truncate">Déconnexion</span>}
+      </button>
 
       <AdminProfileModal 
         isOpen={isProfileModalOpen} 

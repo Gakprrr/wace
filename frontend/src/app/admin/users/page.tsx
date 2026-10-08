@@ -28,9 +28,16 @@ export default function AdminUsersPage() {
   
   const showAlert = (message: string) => setAlertState({ isOpen: true, message });
 
+  const getFetchOpts = (extra: RequestInit = {}): RequestInit => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("wace_token") : null;
+    const headers = new Headers(extra.headers || {});
+    if (token) headers.set("Authorization", `Bearer ${token}`);
+    return { ...extra, headers, credentials: "include" };
+  };
+
   const loadUsers = async () => {
     try {
-      const res = await fetch("/api/admin/users");
+      const res = await fetch("/api/admin/users", getFetchOpts());
       if (res.ok) {
         const data = await res.json();
         setUsers(data || []);
@@ -58,11 +65,11 @@ export default function AdminUsersPage() {
     setConfirmModal({ isOpen: false, user: null });
 
     try {
-      const res = await fetch(`/api/admin/users/${user.id}/ban`, {
+      const res = await fetch(`/api/admin/users/${user.id}/ban`, getFetchOpts({
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ active: !user.isActive }),
-      });
+      }));
 
       if (res.ok) {
         const data = await res.json();

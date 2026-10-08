@@ -1,5 +1,12 @@
 import { Router } from "express";
-import { getGlobalStats } from "@/services/stats.service";
+import {
+  getGlobalStats,
+  getArticleStats,
+  getUserStats,
+  exportCatalogue,
+  exportCatalogueExcel,
+  exportCataloguePdf,
+} from "@/services/stats.service";
 import { uploadImage } from "@/services/upload.service";
 import { generateQrStickersPdf } from "@/services/pdf.service";
 import { db } from "@/db";
@@ -17,6 +24,43 @@ router.get("/stats", async (req, res) => {
   try {
     const stats = await getGlobalStats();
     res.json(stats);
+  } catch (error) {
+    const err = errorResponse(error);
+    res.status(err.status).json({ error: err.error });
+  }
+});
+
+// GET /api/admin/stats/articles
+router.get("/stats/articles", async (req, res) => {
+  try {
+    const stats = await getArticleStats();
+    res.json(stats);
+  } catch (error) {
+    const err = errorResponse(error);
+    res.status(err.status).json({ error: err.error });
+  }
+});
+
+// GET /api/admin/stats/users
+router.get("/stats/users", async (req, res) => {
+  try {
+    const stats = await getUserStats();
+    res.json(stats);
+  } catch (error) {
+    const err = errorResponse(error);
+    res.status(err.status).json({ error: err.error });
+  }
+});
+
+// GET /api/admin/articles/:articleId/comments
+router.get("/articles/:articleId/comments", async (req, res) => {
+  try {
+    const comments = await db.comment.findMany({
+      where: { articleId: req.params.articleId },
+      include: { user: { select: { name: true, email: true, avatar: true } } },
+      orderBy: { createdAt: "desc" },
+    });
+    res.json(comments);
   } catch (error) {
     const err = errorResponse(error);
     res.status(err.status).json({ error: err.error });
@@ -128,6 +172,35 @@ router.get("/export", async (req, res) => {
 
     await workbook.xlsx.write(res);
     res.end();
+  } catch (error) {
+    const err = errorResponse(error);
+    res.status(err.status).json({ error: err.error });
+  }
+});
+
+// GET /api/admin/export/catalogue?format=pdf|excel|csv
+router.get("/export/catalogue", async (req, res) => {
+  try {
+    const format = ((req.query.format as string) || "csv").toLowerCase();
+
+    if (format === "pdf") {
+      const pdfBuffer = await exportCataloguePdf();
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader("Content-Disposition", "attachment; filename=catalogue-wace.pdf");
+      return res.send(pdfBuffer);
+    }
+
+    if (format === "excel" || format === "xlsx") {
+      const excelBuffer = await exportCatalogueExcel();
+      res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+      res.setHeader("Content-Disposition", "attachment; filename=catalogue-wace.xlsx");
+      return res.send(excelBuffer);
+    }
+
+    const csv = await exportCatalogue();
+    res.setHeader("Content-Type", "text/csv; charset=utf-8");
+    res.setHeader("Content-Disposition", "attachment; filename=catalogue-wace.csv");
+    return res.send(csv);
   } catch (error) {
     const err = errorResponse(error);
     res.status(err.status).json({ error: err.error });

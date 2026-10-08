@@ -3,9 +3,8 @@ import { SignJWT, jwtVerify } from "jose";
 import { db } from "@/db";
 import { Role } from "@prisma/client";
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "default_super_secret_key_change_me_in_production"
-);
+const JWT_SECRET_STRING = process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET || "default_super_secret_key_change_me_in_production";
+const JWT_SECRET = new TextEncoder().encode(JWT_SECRET_STRING);
 
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 12); // spec: salt rounds = 12
@@ -17,14 +16,24 @@ export async function comparePassword(password: string, hash: string): Promise<b
 
 export async function generateToken(
   payload: {
-    userId: string;
+    id?: string;
+    userId?: string;
     email: string;
     role: Role;
+    name?: string | null;
     twoFactorVerified?: boolean;
   },
-  expiresIn: string = "24h"
+  expiresIn: string = "7d"
 ): Promise<string> {
-  return new SignJWT(payload)
+  const uid = payload.id || payload.userId || "";
+  return new SignJWT({
+    id: uid,
+    userId: uid,
+    email: payload.email,
+    role: payload.role,
+    name: payload.name || null,
+    twoFactorVerified: payload.twoFactorVerified,
+  })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(expiresIn)
@@ -33,13 +42,16 @@ export async function generateToken(
 
 export async function verifyToken(
   token: string
-): Promise<{ userId: string; email: string; role: Role; twoFactorVerified?: boolean } | null> {
+): Promise<{ id: string; userId: string; email: string; role: Role; name?: string | null; twoFactorVerified?: boolean } | null> {
   try {
     const { payload } = await jwtVerify(token, JWT_SECRET);
+    const uid = (payload.id || payload.userId) as string;
     return {
-      userId: payload.userId as string,
+      id: uid,
+      userId: uid,
       email: payload.email as string,
       role: payload.role as Role,
+      name: (payload.name as string) || null,
       twoFactorVerified: payload.twoFactorVerified as boolean | undefined,
     };
   } catch (error) {
@@ -86,7 +98,7 @@ export async function findUserByEmail(email: string) {
   if (!cleanEmail) {
     return null;
   }
-  return db.user.findUnique({
+  return db.user.findFirst({
     where: { email: cleanEmail },
   });
 }

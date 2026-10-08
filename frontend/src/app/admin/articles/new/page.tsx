@@ -23,6 +23,7 @@ export default function NewArticlePage() {
   const [state, setState] = useState("BON_ETAT");
   const [categoryId, setCategoryId] = useState("");
   const [images, setImages] = useState<string[]>([]);
+  const [imageUrlInput, setImageUrlInput] = useState("");
   const [uploading, setUploading] = useState(false);
   const [isAvailable, setIsAvailable] = useState(true);
   const [isNew, setIsNew] = useState(false);
@@ -310,8 +311,39 @@ export default function NewArticlePage() {
                     htmlFor="image-upload"
                     className="cursor-pointer bg-beige/30 hover:bg-beige/50 dark:bg-anthracite/80 dark:hover:bg-anthracite transition-colors border border-dashed border-or/40 rounded-2xl py-4 px-6 text-sm text-center flex-1 font-medium text-encre/80 dark:text-ivoire/80"
                   >
-                    {uploading ? "Téléchargement en cours..." : "Cliquez pour uploader des images"}
+                    {uploading ? "Téléchargement en cours..." : "📷 Uploader un fichier image"}
                   </label>
+                </div>
+
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Ou entrez un chemin/URL d'image (ex: /images/Jean1.jpg)"
+                    value={imageUrlInput}
+                    onChange={(e) => setImageUrlInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        if (imageUrlInput.trim()) {
+                          setImages([...images, imageUrlInput.trim()]);
+                          setImageUrlInput("");
+                        }
+                      }
+                    }}
+                    className="flex-1 py-3 px-4 rounded-2xl bg-gray-50 dark:bg-anthracite border border-beige dark:border-anthracite/80 text-encre dark:text-ivoire placeholder-encre/40 dark:placeholder-ivoire/50 focus:border-or/60 focus:outline-none transition-all text-sm font-medium"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (imageUrlInput.trim()) {
+                        setImages([...images, imageUrlInput.trim()]);
+                        setImageUrlInput("");
+                      }
+                    }}
+                    className="bg-or text-encre hover:bg-or/80 font-bold px-5 rounded-2xl text-xs transition-colors shadow-sm"
+                  >
+                    + Ajouter
+                  </button>
                 </div>
 
                 {/* Previews */}

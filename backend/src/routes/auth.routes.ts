@@ -5,6 +5,7 @@ import { AuthenticatedRequest, requireAuthMiddleware } from "@/middleware/expres
 import { expressRateLimit } from "@/middleware/rateLimit";
 import { errorResponse, ValidationError, UnauthorizedError } from "@/utils/auth";
 import jwt from "jsonwebtoken";
+import { Role } from "@prisma/client";
 
 const router = Router();
 
@@ -19,7 +20,7 @@ function getJwtSecret(): string {
   return secret;
 }
 
-const authRateLimiter = expressRateLimit(5, 60);
+const authRateLimiter = expressRateLimit(30, 60);
 
 // POST /api/auth/register
 router.post("/register", authRateLimiter, async (req, res) => {
@@ -37,11 +38,7 @@ router.post("/register", authRateLimiter, async (req, res) => {
     const user = await registerUser({ name, email, password, phone });
     
     // Generate JWT token
-    const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role, name: user.name },
-      getJwtSecret(),
-      { expiresIn: "7d" }
-    );
+    const token = await generateToken({ id: user.id, email: user.email, role: user.role, name: user.name });
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -80,11 +77,7 @@ router.post("/login", authRateLimiter, async (req, res) => {
       return;
     }
 
-    const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role, name: user.name },
-      getJwtSecret(),
-      { expiresIn: "7d" }
-    );
+    const token = await generateToken({ id: user.id, email: user.email, role: user.role, name: user.name });
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -100,12 +93,52 @@ router.post("/login", authRateLimiter, async (req, res) => {
   }
 });
 
+// POST /api/auth/google
+router.post("/google", async (req, res) => {
+  try {
+    const { email, name } = req.body;
+    if (!email) {
+      throw new ValidationError("Email Google obligatoire");
+    }
+
+    const cleanEmail = email.trim().toLowerCase();
+    let user: any = await findUserByEmail(cleanEmail);
+
+    if (!user) {
+      user = await registerUser({
+        email: cleanEmail,
+        name: name || cleanEmail.split("@")[0],
+        role: Role.CLIENT,
+      });
+    }
+
+    if (!user) {
+      throw new ValidationError("Impossible de traiter la connexion Google");
+    }
+
+    const token = await generateToken({ id: user.id, email: user.email, role: user.role, name: user.name });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: "/",
+    });
+
+    res.json({ user, token });
+  } catch (error) {
+    const err = errorResponse(error);
+    res.status(err.status).json({ error: err.error });
+  }
+});
+
 // GET /api/auth/session
 router.get("/session", (req: AuthenticatedRequest, res) => {
   if (req.user) {
-    res.json({ user: req.user });
+    res.json({ authenticated: true, user: req.user });
   } else {
-    res.json({ user: null });
+    res.json({ authenticated: false, user: null });
   }
 });
 

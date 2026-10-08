@@ -2,6 +2,7 @@ import { Router } from "express";
 import { db } from "@/db";
 import { AuthenticatedRequest, requireAuthMiddleware } from "@/middleware/expressAuth";
 import { errorResponse } from "@/utils/auth";
+import { getUserLikedArticles } from "@/services/article.service";
 
 const router = Router();
 
@@ -53,6 +54,17 @@ router.put("/me", requireAuthMiddleware, async (req: AuthenticatedRequest, res) 
     });
 
     res.json(updatedUser);
+  } catch (error) {
+    const err = errorResponse(error);
+    res.status(err.status).json({ error: err.error });
+  }
+});
+
+// GET /api/users/me/likes
+router.get("/me/likes", requireAuthMiddleware, async (req: AuthenticatedRequest, res) => {
+  try {
+    const articles = await getUserLikedArticles(req.user!.id);
+    res.json(articles);
   } catch (error) {
     const err = errorResponse(error);
     res.status(err.status).json({ error: err.error });

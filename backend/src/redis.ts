@@ -1,13 +1,14 @@
+import "dotenv/config";
 import Redis from "ioredis";
 
-const redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
+const redisUrl = process.env.REDIS_URL || "redis://default:wace_redis_pass_2026@localhost:6381";
 
 const redisOptions = {
-  maxRetriesPerRequest: 1,
-  enableOfflineQueue: false,
+  maxRetriesPerRequest: 3,
+  enableOfflineQueue: true,
   retryStrategy(times: number) {
-    if (times > 3) {
-      return null; // Stopper les tentatives de reconnexion après 3 essais en dev
+    if (times > 5) {
+      return null;
     }
     return Math.min(times * 100, 2000);
   },

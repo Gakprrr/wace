@@ -15,13 +15,20 @@ export default function AdminOrdersPage() {
     fetchAdminOrders();
   }, []);
 
+  const getFetchOpts = (extra: RequestInit = {}): RequestInit => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("wace_token") : null;
+    const headers = new Headers(extra.headers || {});
+    if (token) headers.set("Authorization", `Bearer ${token}`);
+    return { ...extra, headers, credentials: "include" };
+  };
+
   const fetchAdminOrders = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api"}/orders/admin`);
+      const res = await fetch("/api/orders/admin", getFetchOpts());
       if (!res.ok) throw new Error("Impossible de charger la liste des commandes");
       const data = await res.json();
-      setOrders(data);
+      setOrders(data || []);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -32,11 +39,11 @@ export default function AdminOrdersPage() {
   const handleUpdateStatus = async (orderId: string, newStatus: string) => {
     setUpdatingId(orderId);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api"}/orders/${orderId}/status`, {
+      const res = await fetch(`/api/orders/${orderId}/status`, getFetchOpts({
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
-      });
+      }));
 
       if (!res.ok) throw new Error("Erreur lors de la mise à jour du statut");
 
