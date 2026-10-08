@@ -1,0 +1,89 @@
+{
+  "info": {
+    "name": "WACE API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "authToken", "value": "" },
+    { "key": "articleId", "value": "" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{authToken}}" }]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/register",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kofi Mensah\",\n  \"email\": \"kofi@example.com\",\n  \"password\": \"SecurePass123!\",\n  \"phone\": \"+22890123456\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"kofi@example.com\", \"password\": \"SecurePass123!\"}"
+            }
+          },
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "const json = pm.response.json();",
+                "pm.environment.set('authToken', json.token);",
+                "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                "pm.test('Token received', () => pm.expect(json.token).to.be.a('string'));"
+              ]
+            }
+          }]
+        }
+      ]
+    },
+    {
+      "name": "Articles",
+      "item": [
+        {
+          "name": "Get Articles with Filters",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/articles?page=1&limit=12&category=robes&state=BON_ETAT&minPrice=1000&maxPrice=10000",
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "12" },
+                { "key": "category", "value": "robes" },
+                { "key": "state", "value": "BON_ETAT" },
+                { "key": "minPrice", "value": "1000" },
+                { "key": "maxPrice", "value": "10000" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Article [ADMIN]",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/articles",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Robe Vintage Zara\",\n  \"description\": \"Magnifique robe vintage Zara, taille M, l\u00E9g\u00E8rement port\u00E9e\",\n  \"price\": 4500,\n  \"oldPrice\": 8000,\n  \"stock\": 1,\n  \"state\": \"BON_ETAT\",\n  \"categoryId\": \"cat-robes-id\",\n  \"images\": [\"https://res.cloudinary.com/wace/image/upload/v1/robe1.jpg\"],\n  \"isNew\": false,\n  \"isAvailable\": true\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

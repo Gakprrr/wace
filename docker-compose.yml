@@ -1,0 +1,84 @@
+version: "3.9"
+
+services:
+  backend:
+    build: { context: ./backend, dockerfile: Dockerfile }
+    container_name: wace_backend
+    environment:
+      PORT: 4000
+      DATABASE_URL: postgresql://wace:wace_secure_pwd@postgres:5432/wacedb
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY}
+      VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY}
+      CLOUDINARY_URL: ${CLOUDINARY_URL}
+      GMAIL_USER: ${GMAIL_USER}
+      GMAIL_APP_PASSWORD: ${GMAIL_APP_PASSWORD}
+      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN}
+      CLIENT_URL: http://localhost:3000
+    ports: [ "4000:4000" ]
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    restart: unless-stopped
+    networks: [ wace_network ]
+
+  frontend:
+    build: { context: ./frontend, dockerfile: Dockerfile }
+    container_name: wace_frontend
+    environment:
+      PORT: 3000
+      NEXT_PUBLIC_API_URL: http://localhost:4000/api
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+    ports: [ "3000:3000" ]
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks: [ wace_network ]
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: wace_postgres
+    environment:
+      POSTGRES_USER: wace
+      POSTGRES_PASSWORD: wace123
+      POSTGRES_DB: wacedb
+    ports: [ "5434:5432" ]
+    volumes: [ pgdata:/var/lib/postgresql/data ]
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U wace -d wacedb" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [ wace_network ]
+
+  redis:
+    image: redis:7-alpine
+    container_name: wace_redis
+    environment:
+      REDIS_PASSWORD: wace_redis_pass_2026
+    command: redis-server --requirepass wace_redis_pass_2026 --maxmemory 256mb
+    ports: [ "6381:6379" ]
+    volumes: [ redisdata:/data ]
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-a", "wace_redis_pass_2026", "ping" ]
+      interval: 10s
+    networks: [ wace_network ]
+
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: wace_nginx
+    ports: [ "80:80", "443:443" ]
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/ssl/certs:ro
+    depends_on:
+      - backend
+      - frontend
+    networks: [ wace_network ]
+    restart: unless-stopped
+
+volumes: { pgdata: {}, redisdata: {} }
+networks: { wace_network: { driver: bridge } }
