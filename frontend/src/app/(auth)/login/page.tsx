@@ -108,7 +108,7 @@ export default function LoginPage() {
         {/* Left Side: Image */}
         <div className="w-full md:w-1/2 relative min-h-[300px] md:min-h-[500px] rounded-[1.5rem] overflow-hidden">
           <img
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNF7ezU74URa5aFUqp2DcOeswb9qxH9jBj-xOaLDCUh_UqX7xWaX4jbbP1Lv3mrGJ6OOU4NicxQkKF5ubvSK40RZmKaxDN_XA5SViAP0CWRiEV1UuBiyOa9BCNxuGaJP6lJlzdTBwFTv-LJ0qe44fDtISabqd3diobQxMiV9gA5gPvtHpO-jga6sYAj6db_2OE2eBDwfIF-JTNYtfDwsNO_d1TkuTW_GgeqQIA5l-poIm0_2AvXlHMr32cpQlLMY9IbYokob1RaKs=s2048"
+            src="/images/login.jpeg"
             alt="Fashion model"
             className="absolute inset-0 w-full h-full object-cover"
           />

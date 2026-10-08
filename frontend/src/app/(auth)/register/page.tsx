@@ -72,7 +72,7 @@ export default function RegisterPage() {
         {/* Left Side: Image */}
         <div className="w-full md:w-1/2 relative min-h-[300px] md:min-h-[500px] rounded-[1.5rem] overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80"
+            src="/images/login.jpeg"
             alt="Fashion layout"
             className="absolute inset-0 w-full h-full object-cover"
           />

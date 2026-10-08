@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useLang } from "@/lib/i18n/LangProvider";
+import Logo from "@/components/Logo";
 import { Shirt, ShoppingBag, Store, Tag, Crown, Ghost, Sparkles } from "lucide-react";
 
 export default function Footer() {
@@ -33,7 +34,7 @@ export default function Footer() {
           
           {/* 1. Anciennes informations : Logo + Tagline */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left z-10 w-full md:w-1/3">
-            <span className="font-display text-2xl font-black tracking-widest text-gray-800">WACE</span>
+            <Logo className="w-32 h-auto" />
             <span className="text-[10px] uppercase tracking-[0.25em] text-gray-600 mt-1 font-sans">
               {t.footer.tagline}
             </span>
