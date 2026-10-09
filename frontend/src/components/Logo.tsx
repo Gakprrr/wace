@@ -1,12 +1,20 @@
 import React from 'react';
 
-export default function Logo({ className = "w-40 h-auto" }: { className?: string }) {
+interface LogoProps {
+  className?: string;
+  imgClassName?: string;
+}
+
+export default function Logo({
+  className = "",
+  imgClassName = "h-12 sm:h-14 w-auto"
+}: LogoProps) {
   return (
-    <div className={`flex items-center justify-center select-none ${className}`}>
+    <div className={`inline-flex items-center justify-center select-none ${className}`}>
       <img
         src="/images/logo.png"
         alt="WACE Logo"
-        className="max-h-12 w-auto object-contain"
+        className={`object-contain max-w-full mix-blend-multiply transition-all ${imgClassName}`}
       />
     </div>
   );

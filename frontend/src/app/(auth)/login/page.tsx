@@ -119,7 +119,7 @@ export default function LoginPage() {
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-8">
               <Link href="/" title="Retour à l'accueil" className="cursor-pointer hover:opacity-90 transition-opacity">
-                <Logo className="w-48 md:w-56 h-auto" />
+                <Logo imgClassName="h-16 sm:h-20 md:h-24 w-auto" />
               </Link>
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">

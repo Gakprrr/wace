@@ -78,7 +78,7 @@ export default function RegisterPage() {
           />
           {/* Logo Overlay */}
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px]">
-            <Logo className="w-[85%] max-w-[300px]" />
+            <Logo imgClassName="h-16 sm:h-20 md:h-24 w-auto brightness-0 invert" />
           </div>
         </div>
 
@@ -87,7 +87,7 @@ export default function RegisterPage() {
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-8">
               <Link href="/" title="Retour à l'accueil" className="cursor-pointer hover:opacity-90 transition-opacity">
-                <Logo className="w-48 md:w-56 h-auto" />
+                <Logo imgClassName="h-16 sm:h-20 md:h-24 w-auto" />
               </Link>
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
