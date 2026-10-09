@@ -103,109 +103,66 @@ export default function HomePageClient({ featuredArticles }: HomePageClientProps
   };
 
   return (
-    <main className="flex-1 w-[95%] mx-auto relative flex flex-col px-4 sm:px-6 lg:px-8 mt-6">
+    <main className="flex-1 w-[95%] max-w-7xl mx-auto relative flex flex-col px-4 sm:px-6 lg:px-8 mt-6">
       {/* HERO SECTION */}
-      <section className="relative w-full min-h-[480px] sm:min-h-[520px] md:min-h-[560px] pb-24 md:pb-28 mb-24 sm:mb-32 flex flex-col md:flex-row items-center rounded-[2.5rem] sm:rounded-[3.5rem] shadow-[0_25px_60px_rgba(0,0,0,0.08)] border-2 border-white ring-1 ring-black/5 bg-gradient-to-br from-[#f6f4e8] via-[#eee9d5] to-[#e1dcc6] overflow-visible">
-        
-        {/* Background decorative elements */}
-        <div className="absolute inset-0 pointer-events-none rounded-[2.5rem] sm:rounded-[3.5rem] overflow-hidden">
-          <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-blue-500/15 rounded-full blur-[100px] mix-blend-multiply" />
-          <div className="absolute bottom-[-15%] right-[5%] w-[450px] h-[450px] bg-amber-500/15 rounded-full blur-[90px]" />
+      <section className="relative w-full rounded-3xl sm:rounded-[2.5rem] bg-gradient-to-br from-[#faf9f5] via-[#f3f0e6] to-[#e8e4d6] border border-[#e1dccb] shadow-[0_12px_40px_rgba(0,0,0,0.04)] overflow-hidden p-6 sm:p-10 lg:p-12">
+        {/* Soft subtle ambient background glow */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#d8b652]/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="absolute top-1/3 right-[10%] w-[350px] h-2 bg-gradient-to-r from-transparent via-blue-400/40 to-transparent transform rotate-45 blur-[2px] shadow-[0_0_20px_rgba(59,130,246,0.3)]" />
-          <div className="absolute bottom-[30%] right-[15%] w-[500px] h-2 bg-gradient-to-r from-transparent via-amber-300/40 to-transparent transform -rotate-[15deg] blur-[3px] shadow-[0_0_25px_rgba(216,182,82,0.3)]" />
-
-          <div className="absolute top-[12%] right-[15%] w-40 h-40 border-2 border-blue-500/20 rounded-full" />
-          <div className="absolute top-[40%] right-[5%] w-[350px] h-[350px] border-2 border-dashed border-blue-500/20 rounded-full animate-[spin_50s_linear_infinite]" />
-          <div className="absolute bottom-[20%] right-[25%] w-32 h-32 bg-blue-500/10 rounded-full blur-[15px]" />
-
-          <div className="absolute top-[25%] right-[12%] text-blue-400/40 text-2xl font-bold tracking-widest">
-            + + +
-          </div>
-          <div className="absolute bottom-[40%] right-[18%] w-16 h-16 border-t-2 border-l-2 border-blue-400/30 transform rotate-45" />
-          <div className="absolute top-[50%] right-[8%] flex gap-2">
-            <span className="w-2 h-2 bg-blue-400/40 rounded-full"></span>
-            <span className="w-2 h-2 bg-blue-400/40 rounded-full"></span>
-            <span className="w-2 h-2 bg-blue-400/40 rounded-full"></span>
-          </div>
-        </div>
-
-        {/* Hero Content Grid */}
-        <div className="relative z-20 w-full pt-8 sm:pt-12 pb-6 px-6 sm:px-10 lg:px-16 flex flex-col md:flex-row items-center justify-between gap-8 lg:gap-12">
-          
-          {/* Left Text */}
-          <div className="w-full md:w-[45%] flex flex-col justify-center text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 backdrop-blur-md border border-white/80 mb-5 w-fit shadow-sm">
-              <Sparkles className="w-4 h-4 text-blue-600 animate-pulse" />
-              <span className="text-xs font-extrabold text-gray-800 tracking-wider uppercase">
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          {/* Left Column: Text & CTA */}
+          <div className="lg:col-span-7 flex flex-col justify-center space-y-5">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-black/5 shadow-xs w-fit">
+              <Sparkles className="w-4 h-4 text-[#d8b652]" />
+              <span className="text-xs font-bold text-gray-800 tracking-wider uppercase">
                 {t.home.newCollection}
               </span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#191815] leading-[1.08] mb-5 tracking-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1f1e1a] tracking-tight leading-[1.15]">
               {t.home.heroTitle1}
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500">
+              <span className="bg-gradient-to-r from-[#1f1e1a] via-[#4a4639] to-[#d8b652] bg-clip-text text-transparent">
                 {t.home.heroTitle2}
               </span>
             </h1>
-            
-            <p className="text-base sm:text-lg text-gray-700 font-medium bg-white/40 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-white/60 shadow-sm relative z-20 mb-6 leading-relaxed">
+
+            <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed max-w-xl">
               {t.home.heroDesc}
             </p>
 
-            {/* Quick feature tags */}
-            <div className="flex flex-wrap items-center gap-3 text-xs font-bold text-gray-700">
-              <span className="px-3 py-1.5 rounded-xl bg-white/60 backdrop-blur-sm border border-white/80 flex items-center gap-1.5 shadow-2xs">
-                ✦ 100% Authentique
-              </span>
-              <span className="px-3 py-1.5 rounded-xl bg-white/60 backdrop-blur-sm border border-white/80 flex items-center gap-1.5 shadow-2xs">
-                ⚡️ Pièces Limitées
-              </span>
-              <span className="px-3 py-1.5 rounded-xl bg-white/60 backdrop-blur-sm border border-white/80 flex items-center gap-1.5 shadow-2xs">
-                🔥 Vintage & Streetwear
-              </span>
+            <div className="flex flex-wrap gap-4 pt-2">
+              <Link
+                href="/catalogue"
+                className="inline-flex items-center gap-2 bg-[#1f1e1a] hover:bg-[#d8b652] text-white hover:text-[#1f1e1a] px-7 py-3.5 rounded-xl font-bold text-sm transition-all duration-300 shadow-md hover:shadow-lg"
+              >
+                <span>Découvrir la collection</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
 
-          {/* Middle Image Container */}
-          <div className="w-full md:w-[35%] max-w-[380px] aspect-[4/5] sm:h-[340px] md:h-[380px] lg:h-[400px] relative rounded-[2.5rem] overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.18)] border-4 border-white ring-1 ring-black/5 z-20 transform hover:scale-[1.02] transition-all duration-500 group">
-            <Image
-              src="/images/acceuil.jpeg"
-              alt={t.home.newCollection}
-              fill
-              className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-              priority
-              unoptimized
-            />
-            <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md text-white border border-white/20 px-3 py-1.5 rounded-full text-xs font-extrabold tracking-wide shadow-lg flex items-center gap-1.5">
-              <Crown className="w-3.5 h-3.5 text-[#d8b652]" />
-              <span>Selection WACE</span>
+          {/* Right Column: Hero Image Card */}
+          <div className="lg:col-span-5 flex justify-center items-center">
+            <div className="relative w-full max-w-md aspect-[4/3] sm:aspect-[14/11] rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border-4 border-white/90 group">
+              <Image
+                src="/images/acceuil.jpeg"
+                alt={t.home.newCollection}
+                fill
+                className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                priority
+                unoptimized
+              />
             </div>
           </div>
-
-          {/* Right Floating Typography */}
-          <div className="hidden lg:flex w-[20%] h-full relative z-10 flex-col justify-center items-center pointer-events-none">
-            <div className="absolute top-[10%] left-[10%] text-7xl lg:text-8xl font-black text-[#d8b652]/70 transform -rotate-12 drop-shadow-md select-none">
-              W
-            </div>
-            <div className="absolute top-[35%] right-[5%] text-8xl lg:text-9xl font-black text-[#d8b652]/60 transform rotate-[15deg] drop-shadow-md select-none">
-              A
-            </div>
-            <div className="absolute bottom-[25%] left-[5%] text-6xl lg:text-7xl font-black text-[#d8b652]/75 transform rotate-[45deg] drop-shadow-md select-none">
-              C
-            </div>
-            <div className="absolute top-[60%] left-[40%] text-7xl lg:text-8xl font-black text-[#d8b652]/80 transform rotate-[75deg] drop-shadow-md select-none">
-              E
-            </div>
-          </div>
-        </div>
-
-        {/* Hero Search Bar positioned cleanly at the bottom edge */}
-        <div className="absolute -bottom-10 lg:-bottom-12 left-1/2 -translate-x-1/2 z-30 w-[94%] max-w-5xl">
-          <HeroSearch />
         </div>
       </section>
+
+      {/* HERO SEARCH FILTER BAR */}
+      <div className="w-full max-w-5xl mx-auto mt-6 sm:mt-8 mb-16 relative z-20 px-2 sm:px-0">
+        <HeroSearch />
+      </div>
 
       {/* INFINITE SCROLLING MARQUEE */}
       <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden bg-transparent py-6 mb-24 border-y border-[#1f1e1a]/10">

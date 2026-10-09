@@ -3,12 +3,12 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLang } from "@/lib/i18n/LangProvider";
-import { Search, Shirt, Tag, Coins } from "lucide-react";
+import { Search, Tag, SlidersHorizontal, Banknote } from "lucide-react";
 
 export default function HeroSearch() {
   const router = useRouter();
   const { t } = useLang();
-  
+
   const [category, setCategory] = useState("");
   const [state, setState] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
@@ -23,77 +23,77 @@ export default function HeroSearch() {
   };
 
   return (
-    <div className="w-full bg-white/95 backdrop-blur-2xl border-2 border-white/90 ring-1 ring-black/5 p-4 sm:p-5 rounded-[2.5rem] shadow-[0_25px_60px_rgba(0,0,0,0.12)] flex flex-col lg:flex-row gap-3 sm:gap-4 items-center justify-between z-40 transition-all">
+    <div className="w-full bg-white/95 backdrop-blur-xl border border-gray-200/80 p-3 sm:p-4 rounded-2xl sm:rounded-3xl shadow-[0_12px_35px_rgba(0,0,0,0.06)] flex flex-col md:flex-row gap-3 md:gap-4 items-center justify-between">
       
-      {/* Category Dropdown */}
-      <div className="flex-1 w-full bg-gray-50/90 hover:bg-white border border-gray-200/70 hover:border-blue-400/50 rounded-2xl p-3 transition-all duration-300 group">
-        <div className="flex items-center gap-2 mb-1">
-          <Shirt className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
-          <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider cursor-pointer">
+      {/* CATEGORY SELECT */}
+      <div className="flex-1 w-full px-3 py-2 border-b md:border-b-0 md:border-r border-gray-200 flex items-center gap-3">
+        <Tag className="w-4 h-4 text-gray-400 shrink-0" />
+        <div className="w-full">
+          <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
             {t.catalogue.category}
           </label>
+          <select 
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="w-full bg-transparent text-sm text-gray-800 font-medium focus:outline-none cursor-pointer"
+          >
+            <option value="">{t.catalogue.allCategories}</option>
+            <option value="casquettes">{t.home.catCaps}</option>
+            <option value="bonnets">{t.home.catBeanies}</option>
+            <option value="vetements">{t.home.catClothes}</option>
+          </select>
         </div>
-        <select 
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="w-full bg-transparent text-sm font-semibold text-gray-800 focus:outline-none cursor-pointer"
-        >
-          <option value="">{t.catalogue.allCategories}</option>
-          <option value="casquettes">{t.home.catCaps}</option>
-          <option value="bonnets">{t.home.catBeanies}</option>
-          <option value="vetements">{t.home.catClothes}</option>
-        </select>
       </div>
-
-      {/* Condition Dropdown */}
-      <div className="flex-1 w-full bg-gray-50/90 hover:bg-white border border-gray-200/70 hover:border-blue-400/50 rounded-2xl p-3 transition-all duration-300 group">
-        <div className="flex items-center gap-2 mb-1">
-          <Tag className="w-4 h-4 text-indigo-600 group-hover:scale-110 transition-transform" />
-          <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider cursor-pointer">
+      
+      {/* CONDITION SELECT */}
+      <div className="flex-1 w-full px-3 py-2 border-b md:border-b-0 md:border-r border-gray-200 flex items-center gap-3">
+        <SlidersHorizontal className="w-4 h-4 text-gray-400 shrink-0" />
+        <div className="w-full">
+          <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
             {t.catalogue.condition}
           </label>
+          <select 
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            className="w-full bg-transparent text-sm text-gray-800 font-medium focus:outline-none cursor-pointer"
+          >
+            <option value="">{t.catalogue.allConditions}</option>
+            <option value="NEUF">{t.catalogue.conditions.NEUF}</option>
+            <option value="TRES_BON_ETAT">{t.catalogue.conditions.TRES_BON_ETAT}</option>
+            <option value="BON_ETAT">{t.catalogue.conditions.BON_ETAT}</option>
+            <option value="USE_VINTAGE">{t.catalogue.conditions.USE_VINTAGE}</option>
+          </select>
         </div>
-        <select 
-          value={state}
-          onChange={(e) => setState(e.target.value)}
-          className="w-full bg-transparent text-sm font-semibold text-gray-800 focus:outline-none cursor-pointer"
-        >
-          <option value="">{t.catalogue.allConditions}</option>
-          <option value="NEUF">{t.catalogue.conditions.NEUF}</option>
-          <option value="TRES_BON_ETAT">{t.catalogue.conditions.TRES_BON_ETAT}</option>
-          <option value="BON_ETAT">{t.catalogue.conditions.BON_ETAT}</option>
-          <option value="USE_VINTAGE">{t.catalogue.conditions.USE_VINTAGE}</option>
-        </select>
       </div>
 
-      {/* Max Price Dropdown */}
-      <div className="flex-1 w-full bg-gray-50/90 hover:bg-white border border-gray-200/70 hover:border-blue-400/50 rounded-2xl p-3 transition-all duration-300 group">
-        <div className="flex items-center gap-2 mb-1">
-          <Coins className="w-4 h-4 text-amber-500 group-hover:scale-110 transition-transform" />
-          <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider cursor-pointer">
+      {/* MAX PRICE SELECT */}
+      <div className="flex-1 w-full px-3 py-2 flex items-center gap-3">
+        <Banknote className="w-4 h-4 text-gray-400 shrink-0" />
+        <div className="w-full">
+          <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
             {t.catalogue.maxPrice}
           </label>
+          <select 
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            className="w-full bg-transparent text-sm text-gray-800 font-medium focus:outline-none cursor-pointer"
+          >
+            <option value="">{t.catalogue.anyPrice}</option>
+            <option value="5000">{t.catalogue.underPrice.replace('{price}', '5 000').replace('{currency}', t.common.currency)}</option>
+            <option value="10000">{t.catalogue.underPrice.replace('{price}', '10 000').replace('{currency}', t.common.currency)}</option>
+            <option value="25000">{t.catalogue.underPrice.replace('{price}', '25 000').replace('{currency}', t.common.currency)}</option>
+            <option value="50000">{t.catalogue.underPrice.replace('{price}', '50 000').replace('{currency}', t.common.currency)}</option>
+          </select>
         </div>
-        <select 
-          value={maxPrice}
-          onChange={(e) => setMaxPrice(e.target.value)}
-          className="w-full bg-transparent text-sm font-semibold text-gray-800 focus:outline-none cursor-pointer"
-        >
-          <option value="">{t.catalogue.anyPrice}</option>
-          <option value="5000">{t.catalogue.underPrice.replace('{price}', '5 000').replace('{currency}', t.common.currency)}</option>
-          <option value="10000">{t.catalogue.underPrice.replace('{price}', '10 000').replace('{currency}', t.common.currency)}</option>
-          <option value="25000">{t.catalogue.underPrice.replace('{price}', '25 000').replace('{currency}', t.common.currency)}</option>
-          <option value="50000">{t.catalogue.underPrice.replace('{price}', '50 000').replace('{currency}', t.common.currency)}</option>
-        </select>
       </div>
 
-      {/* Search Button */}
-      <div className="w-full lg:w-auto">
+      {/* SEARCH BUTTON */}
+      <div className="w-full md:w-auto shrink-0">
         <button 
           onClick={handleSearch}
-          className="w-full lg:w-auto bg-[#1f1e1a] hover:bg-[#d8b652] text-white hover:text-[#1f1e1a] px-8 py-4 rounded-2xl font-extrabold text-sm tracking-wide shadow-[0_10px_25px_rgba(31,30,26,0.25)] hover:shadow-[0_12px_30px_rgba(216,182,82,0.4)] transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center gap-2.5 group cursor-pointer"
+          className="w-full md:w-auto bg-[#1f1e1a] hover:bg-[#d8b652] text-white hover:text-[#1f1e1a] px-7 py-3.5 rounded-xl font-bold text-sm shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2"
         >
-          <Search className="w-4 h-4 group-hover:scale-110 transition-transform" />
+          <Search className="w-4 h-4" />
           <span>{t.catalogue.searchBtn}</span>
         </button>
       </div>
