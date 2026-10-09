@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const API_BACKEND_URL = process.env.BACKEND_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   turbopack: {
     // Point Turbopack to the project root to avoid workspace root inference warnings
     root: __dirname,

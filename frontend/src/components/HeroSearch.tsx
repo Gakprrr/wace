@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLang } from "@/lib/i18n/LangProvider";
+import { Search, Shirt, Tag, Coins } from "lucide-react";
 
 export default function HeroSearch() {
   const router = useRouter();
@@ -22,14 +23,20 @@ export default function HeroSearch() {
   };
 
   return (
-    <div className="w-full bg-white/95 backdrop-blur-2xl border-2 border-white/90 ring-1 ring-gray-200/50 p-5 rounded-[2rem] shadow-[0_25px_60px_rgba(0,0,0,0.15)] flex flex-col sm:flex-row gap-4 items-center justify-between z-40">
+    <div className="w-full bg-white/95 backdrop-blur-2xl border-2 border-white/90 ring-1 ring-black/5 p-4 sm:p-5 rounded-[2.5rem] shadow-[0_25px_60px_rgba(0,0,0,0.12)] flex flex-col lg:flex-row gap-3 sm:gap-4 items-center justify-between z-40 transition-all">
       
-      <div className="flex-1 w-full px-4 border-b sm:border-b-0 sm:border-r border-gray-300/60 pb-3 sm:pb-0">
-        <label className="block text-xs font-bold text-gray-800 mb-2 uppercase tracking-wide">{t.catalogue.category}</label>
+      {/* Category Dropdown */}
+      <div className="flex-1 w-full bg-gray-50/90 hover:bg-white border border-gray-200/70 hover:border-blue-400/50 rounded-2xl p-3 transition-all duration-300 group">
+        <div className="flex items-center gap-2 mb-1">
+          <Shirt className="w-4 h-4 text-blue-600 group-hover:scale-110 transition-transform" />
+          <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider cursor-pointer">
+            {t.catalogue.category}
+          </label>
+        </div>
         <select 
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="w-full bg-transparent text-sm text-gray-700 font-medium focus:outline-none cursor-pointer"
+          className="w-full bg-transparent text-sm font-semibold text-gray-800 focus:outline-none cursor-pointer"
         >
           <option value="">{t.catalogue.allCategories}</option>
           <option value="casquettes">{t.home.catCaps}</option>
@@ -37,13 +44,19 @@ export default function HeroSearch() {
           <option value="vetements">{t.home.catClothes}</option>
         </select>
       </div>
-      
-      <div className="flex-1 w-full px-4 border-b sm:border-b-0 sm:border-r border-gray-300/60 pb-3 sm:pb-0">
-        <label className="block text-xs font-bold text-gray-800 mb-2 uppercase tracking-wide">{t.catalogue.condition}</label>
+
+      {/* Condition Dropdown */}
+      <div className="flex-1 w-full bg-gray-50/90 hover:bg-white border border-gray-200/70 hover:border-blue-400/50 rounded-2xl p-3 transition-all duration-300 group">
+        <div className="flex items-center gap-2 mb-1">
+          <Tag className="w-4 h-4 text-indigo-600 group-hover:scale-110 transition-transform" />
+          <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider cursor-pointer">
+            {t.catalogue.condition}
+          </label>
+        </div>
         <select 
           value={state}
           onChange={(e) => setState(e.target.value)}
-          className="w-full bg-transparent text-sm text-gray-700 font-medium focus:outline-none cursor-pointer"
+          className="w-full bg-transparent text-sm font-semibold text-gray-800 focus:outline-none cursor-pointer"
         >
           <option value="">{t.catalogue.allConditions}</option>
           <option value="NEUF">{t.catalogue.conditions.NEUF}</option>
@@ -53,12 +66,18 @@ export default function HeroSearch() {
         </select>
       </div>
 
-      <div className="flex-1 w-full px-4 pb-3 sm:pb-0">
-        <label className="block text-xs font-bold text-gray-800 mb-2 uppercase tracking-wide">{t.catalogue.maxPrice}</label>
+      {/* Max Price Dropdown */}
+      <div className="flex-1 w-full bg-gray-50/90 hover:bg-white border border-gray-200/70 hover:border-blue-400/50 rounded-2xl p-3 transition-all duration-300 group">
+        <div className="flex items-center gap-2 mb-1">
+          <Coins className="w-4 h-4 text-amber-500 group-hover:scale-110 transition-transform" />
+          <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider cursor-pointer">
+            {t.catalogue.maxPrice}
+          </label>
+        </div>
         <select 
           value={maxPrice}
           onChange={(e) => setMaxPrice(e.target.value)}
-          className="w-full bg-transparent text-sm text-gray-700 font-medium focus:outline-none cursor-pointer"
+          className="w-full bg-transparent text-sm font-semibold text-gray-800 focus:outline-none cursor-pointer"
         >
           <option value="">{t.catalogue.anyPrice}</option>
           <option value="5000">{t.catalogue.underPrice.replace('{price}', '5 000').replace('{currency}', t.common.currency)}</option>
@@ -68,12 +87,14 @@ export default function HeroSearch() {
         </select>
       </div>
 
-      <div className="w-full sm:w-auto mt-3 sm:mt-0 px-2 sm:px-0">
+      {/* Search Button */}
+      <div className="w-full lg:w-auto">
         <button 
           onClick={handleSearch}
-          className="w-full sm:w-auto bg-[#1f1e1a] hover:bg-[#d8b652] text-white hover:text-[#1f1e1a] px-10 py-4 rounded-2xl font-bold shadow-[0_8px_20px_rgba(31,30,26,0.3)] hover:shadow-[0_12px_25px_rgba(216,182,82,0.4)] transition-all duration-300 transform hover:-translate-y-1"
+          className="w-full lg:w-auto bg-[#1f1e1a] hover:bg-[#d8b652] text-white hover:text-[#1f1e1a] px-8 py-4 rounded-2xl font-extrabold text-sm tracking-wide shadow-[0_10px_25px_rgba(31,30,26,0.25)] hover:shadow-[0_12px_30px_rgba(216,182,82,0.4)] transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center gap-2.5 group cursor-pointer"
         >
-          {t.catalogue.searchBtn}
+          <Search className="w-4 h-4 group-hover:scale-110 transition-transform" />
+          <span>{t.catalogue.searchBtn}</span>
         </button>
       </div>
     </div>
