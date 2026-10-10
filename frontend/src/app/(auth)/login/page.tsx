@@ -108,9 +108,9 @@ export default function LoginPage() {
         {/* Left Side: Image */}
         <div className="w-full md:w-1/2 relative min-h-[300px] md:min-h-[500px] rounded-[1.5rem] overflow-hidden">
           <img
-            src="/images/Jean5.jpg"
-            alt="WACE Model"
-            className="absolute inset-0 w-full h-full object-cover"
+            src="/images/mannequin_login.jpeg"
+            alt="WACE Model in White T-Shirt and Jeans"
+            className="absolute inset-0 w-full h-full object-cover object-top"
           />
         </div>
 

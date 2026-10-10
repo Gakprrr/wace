@@ -145,11 +145,11 @@ export default function HomePageClient({ featuredArticles }: HomePageClientProps
 
           {/* Right Column: Hero Image Card */}
           <div className="lg:col-span-5 flex justify-center items-center">
-            <div className="relative w-full max-w-md h-[400px] sm:h-[460px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border-4 border-white/90 group">
+            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border-4 border-white group bg-white w-fit max-w-full">
               <img
                 src="/images/acceuil.jpeg"
                 alt={t.home.newCollection}
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                className="w-full max-w-sm lg:max-w-md h-auto block group-hover:scale-105 transition-transform duration-500 rounded-xl sm:rounded-2xl"
               />
             </div>
           </div>
