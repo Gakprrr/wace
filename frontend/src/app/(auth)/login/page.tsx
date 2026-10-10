@@ -108,8 +108,8 @@ export default function LoginPage() {
         {/* Left Side: Image */}
         <div className="w-full md:w-1/2 relative min-h-[300px] md:min-h-[500px] rounded-[1.5rem] overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1000&q=80"
-            alt="Fashion model"
+            src="/images/Jean5.jpg"
+            alt="WACE Model"
             className="absolute inset-0 w-full h-full object-cover"
           />
         </div>
@@ -176,7 +176,7 @@ export default function LoginPage() {
               <div className="flex items-center justify-between pt-2">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input type="checkbox" className="rounded text-[#d8b652] focus:ring-[#d8b652] w-4 h-4 border-gray-300" />
-                  <span className="text-sm text-gray-600">Se souvenir de moi</span>
+                  <span className="text-sm text-gray-600">{t.auth.rememberMe}</span>
                 </label>
                 <Link href="/forgot-password" className="text-sm text-[#d8b652] font-semibold hover:underline">
                   {t.auth.forgotPassword}
@@ -200,7 +200,7 @@ export default function LoginPage() {
                   className="w-full flex items-center justify-center gap-2 bg-[#f4f4f5] text-gray-900 rounded-full py-3.5 font-semibold hover:bg-gray-200 transition-colors"
                 >
                   <Globe className="w-5 h-5 text-blue-500" />
-                  Google
+                  {t.auth.google}
                 </button>
               </div>
 

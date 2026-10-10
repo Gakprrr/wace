@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Search, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useLang } from "@/lib/i18n/LangProvider";
 
 interface Article {
   id: string;
@@ -13,6 +14,7 @@ interface Article {
 }
 
 export default function SearchBar() {
+  const { t } = useLang();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Article[]>([]);
   const [loading, setLoading] = useState(false);
@@ -75,7 +77,7 @@ export default function SearchBar() {
           onFocus={() => {
             if (results.length > 0) setOpen(true);
           }}
-          placeholder="Rechercher..."
+          placeholder={t.catalogue.search}
           className="w-full pl-10 pr-4 py-2 text-sm bg-gray-50/50 dark:bg-anthracite/50 border border-beige/40 dark:border-anthracite rounded-full focus:outline-none focus:ring-1 focus:ring-or focus:bg-white dark:focus:bg-anthracite transition-all text-encre dark:text-ivoire"
         />
         <div className="absolute left-3 top-1/2 -translate-y-1/2">

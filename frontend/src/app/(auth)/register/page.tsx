@@ -148,13 +148,13 @@ export default function RegisterPage() {
               </div>
 
               <div className="space-y-1.5 w-1/2 relative">
-                <label className="block text-sm font-medium text-gray-700">Confirmer</label>
+                <label className="block text-sm font-medium text-gray-700">{t.auth.confirm}</label>
                 <div className="relative">
                   <input
                     type={showConfirmPassword ? "text" : "password"}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder={t.auth.password}
+                    placeholder={t.auth.confirmPassword}
                     required
                     className="w-full pl-4 pr-10 py-3 rounded-full border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#d8b652] focus:border-transparent transition-all text-base font-semibold shadow-sm"
                   />
@@ -186,7 +186,7 @@ export default function RegisterPage() {
                 className="w-full flex items-center justify-center gap-2 bg-[#f4f4f5] text-gray-900 rounded-full py-3.5 font-semibold hover:bg-gray-200 transition-colors"
               >
                 <Globe className="w-5 h-5 text-blue-500" />
-                Google
+                {t.auth.google}
               </button>
             </div>
 
