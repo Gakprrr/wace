@@ -7,14 +7,14 @@ interface LogoProps {
 
 export default function Logo({
   className = "",
-  imgClassName = "h-12 sm:h-14 w-auto"
+  imgClassName = "h-14 sm:h-18 md:h-20 w-auto"
 }: LogoProps) {
   return (
     <div className={`inline-flex items-center justify-center select-none ${className}`}>
       <img
         src="/images/logo.png"
         alt="WACE Logo"
-        className={`object-contain max-w-full mix-blend-multiply transition-all ${imgClassName}`}
+        className={`object-contain max-w-full ${imgClassName}`}
       />
     </div>
   );

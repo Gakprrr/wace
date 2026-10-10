@@ -55,7 +55,7 @@ export default function Navbar() {
         {/* Logo */}
         <div className="flex-shrink-0">
           <Link href="/" className="flex items-center justify-center group">
-            <Logo imgClassName="h-12 sm:h-14 lg:h-16 w-auto transition-transform group-hover:scale-105" />
+            <Logo imgClassName="h-14 sm:h-16 lg:h-20 w-auto transition-transform group-hover:scale-105" />
           </Link>
         </div>
 

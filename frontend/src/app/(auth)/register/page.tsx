@@ -70,24 +70,20 @@ export default function RegisterPage() {
     <main className="min-h-screen bg-[#d8d6d4] flex items-center justify-center p-4 md:p-8 font-sans">
       <div className="bg-white rounded-[2rem] shadow-xl w-full max-w-[850px] flex flex-col md:flex-row p-3">
         {/* Left Side: Image */}
-        <div className="w-full md:w-1/2 relative min-h-[300px] md:min-h-[500px] rounded-[1.5rem] overflow-hidden">
+        <div className="w-full md:w-1/2 relative min-h-[300px] md:min-h-[500px] rounded-[1.5rem] overflow-hidden bg-[#a4afd5] flex items-center justify-center">
           <img
             src="/images/login.jpeg"
-            alt="Fashion layout"
-            className="absolute inset-0 w-full h-full object-cover"
+            alt="WACE Fashion"
+            className="w-full h-full object-contain p-1 rounded-[1.5rem]"
           />
-          {/* Logo Overlay */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px]">
-            <Logo imgClassName="h-16 sm:h-20 md:h-24 w-auto brightness-0 invert" />
-          </div>
         </div>
 
         {/* Right Side: Form */}
         <div className="w-full md:w-1/2 p-6 md:p-12 flex flex-col justify-center">
           <div className="text-center mb-8">
-            <div className="flex items-center justify-center mb-8">
+            <div className="flex items-center justify-center mb-6">
               <Link href="/" title="Retour à l'accueil" className="cursor-pointer hover:opacity-90 transition-opacity">
-                <Logo imgClassName="h-16 sm:h-20 md:h-24 w-auto" />
+                <Logo imgClassName="h-20 sm:h-24 md:h-28 w-auto" />
               </Link>
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">

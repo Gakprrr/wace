@@ -108,7 +108,7 @@ export default function LoginPage() {
         {/* Left Side: Image */}
         <div className="w-full md:w-1/2 relative min-h-[300px] md:min-h-[500px] rounded-[1.5rem] overflow-hidden">
           <img
-            src="/images/login.jpeg"
+            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1000&q=80"
             alt="Fashion model"
             className="absolute inset-0 w-full h-full object-cover"
           />
@@ -117,9 +117,9 @@ export default function LoginPage() {
         {/* Right Side: Form */}
         <div className="w-full md:w-1/2 p-6 md:p-12 flex flex-col justify-center">
           <div className="text-center mb-8">
-            <div className="flex items-center justify-center mb-8">
+            <div className="flex items-center justify-center mb-6">
               <Link href="/" title="Retour à l'accueil" className="cursor-pointer hover:opacity-90 transition-opacity">
-                <Logo imgClassName="h-16 sm:h-20 md:h-24 w-auto" />
+                <Logo imgClassName="h-20 sm:h-24 md:h-28 w-auto" />
               </Link>
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
