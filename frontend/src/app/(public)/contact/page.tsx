@@ -6,6 +6,8 @@ import Footer from "@/components/Footer";
 import { Mail, Info, Phone } from "lucide-react";
 import { useLang } from "@/lib/i18n/LangProvider";
 
+import Image from "next/image";
+
 interface Contact {
   id: string;
   platform: string;
@@ -40,40 +42,40 @@ export default function ContactPage() {
 
   const platformColors: Record<string, { bg: string; text: string; border: string; hover: string }> = {
     whatsapp: {
-      bg: "bg-green-950/20",
-      text: "text-green-500",
-      border: "border-green-800/20",
-      hover: "hover:border-green-500/50",
+      bg: "bg-green-100 dark:bg-green-950/40",
+      text: "text-green-600 dark:text-green-400",
+      border: "border-green-300 dark:border-green-800/40",
+      hover: "hover:border-green-500",
     },
     instagram: {
-      bg: "bg-pink-950/20",
-      text: "text-pink-500",
-      border: "border-pink-800/20",
-      hover: "hover:border-pink-500/50",
+      bg: "bg-pink-100 dark:bg-pink-950/40",
+      text: "text-pink-600 dark:text-pink-400",
+      border: "border-pink-300 dark:border-pink-800/40",
+      hover: "hover:border-pink-500",
     },
     tiktok: {
-      bg: "bg-black/10 dark:bg-white/10",
-      text: "text-black dark:text-white",
-      border: "border-black/20 dark:border-white/20",
-      hover: "hover:border-black/50 dark:hover:border-white/50",
+      bg: "bg-gray-200 dark:bg-white/20",
+      text: "text-gray-900 dark:text-white",
+      border: "border-gray-300 dark:border-white/30",
+      hover: "hover:border-gray-900 dark:hover:border-white",
     },
     facebook: {
-      bg: "bg-blue-950/20",
-      text: "text-blue-500",
-      border: "border-blue-800/20",
-      hover: "hover:border-blue-500/50",
+      bg: "bg-blue-100 dark:bg-blue-950/40",
+      text: "text-blue-600 dark:text-blue-400",
+      border: "border-blue-300 dark:border-blue-800/40",
+      hover: "hover:border-blue-500",
     },
     gmail: {
-      bg: "bg-red-950/20",
-      text: "text-red-500",
-      border: "border-red-800/20",
-      hover: "hover:border-red-500/50",
+      bg: "bg-red-100 dark:bg-red-950/40",
+      text: "text-red-600 dark:text-red-400",
+      border: "border-red-300 dark:border-red-800/40",
+      hover: "hover:border-red-500",
     },
     phone: {
-      bg: "bg-or/20",
-      text: "text-or",
-      border: "border-or/30",
-      hover: "hover:border-or/60",
+      bg: "bg-[#d8b652]/20",
+      text: "text-[#d8b652]",
+      border: "border-[#d8b652]/40",
+      hover: "hover:border-[#d8b652]",
     },
   };
 
@@ -113,21 +115,37 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-ivoire text-encre dark:bg-encre dark:text-encre dark:text-ivoire font-sans">
+    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-encre text-encre dark:text-ivoire font-sans">
       <Navbar />
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex-1 flex flex-col justify-center">
-        <div className="text-center mb-16">
-          <span className="text-xs font-bold uppercase tracking-widest text-or bg-or/10 px-3 py-1.5 rounded-full border border-or/20">
-            {t.contact.tag}
-          </span>
-          <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight mt-6">
-            {t.contact.title} <span className="text-or italic font-light">{t.contact.titleHighlight}</span>
-          </h1>
-          <p className="text-sm text-encre/70 dark:text-encre dark:text-ivoire/75 mt-4 max-w-md mx-auto font-light leading-relaxed">
-            {t.contact.subtitle}
-          </p>
-        </div>
+      {/* Hero Header avec fond.jpeg flouté */}
+      <div className="px-4 sm:px-6 lg:px-8 pt-6 pb-4 w-full max-w-[90rem] mx-auto">
+        <section className="relative w-full py-10 sm:py-14 bg-encre text-ivoire flex flex-col justify-center items-center overflow-hidden rounded-[2.5rem] border border-[#d8b652]/50 shadow-xl">
+          <Image
+            src="/images/fond.jpeg"
+            alt="Contact WACE"
+            fill
+            className="object-cover scale-105 filter blur-[4px]"
+            priority
+            unoptimized
+          />
+          <div className="absolute inset-0 bg-black/65 backdrop-blur-[2px]"></div>
+          
+          <div className="relative z-10 text-center px-6 max-w-3xl mx-auto">
+            <span className="text-[#d8b652] font-extrabold tracking-widest uppercase text-xs sm:text-sm bg-black/40 px-4 py-1.5 rounded-full border border-[#d8b652]/30 inline-block mb-4">
+              {t.contact.tag}
+            </span>
+            <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-white mb-3 drop-shadow-md">
+              {t.contact.title} <span className="text-[#d8b652] italic font-light">{t.contact.titleHighlight}</span>
+            </h1>
+            <p className="text-sm sm:text-base text-white/90 font-normal leading-relaxed max-w-xl mx-auto drop-shadow-md">
+              {t.contact.subtitle}
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-1 flex flex-col justify-center w-full">
 
         {loading ? (
           <div className="flex flex-wrap justify-center gap-6 lg:gap-8 max-w-5xl mx-auto w-full">

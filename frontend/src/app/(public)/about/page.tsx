@@ -15,32 +15,32 @@ export default function AboutPage() {
       
       {/* Hero Header */}
       <div className="px-4 sm:px-6 lg:px-8 pt-6 pb-10 w-full max-w-[90rem] mx-auto">
-        <section className="relative w-full h-[35vh] sm:h-[40vh] min-h-[300px] bg-encre text-ivoire flex flex-col justify-center items-center overflow-hidden rounded-[2.5rem] border border-[#d8b652]/50 shadow-2xl shadow-[#d8b652]/10 ring-8 ring-[#d8b652]/5">
+        <section className="relative w-full py-12 sm:py-16 md:py-20 min-h-[380px] sm:min-h-[440px] bg-encre text-ivoire flex flex-col justify-center items-center overflow-hidden rounded-[2.5rem] border border-[#d8b652]/50 shadow-2xl shadow-[#d8b652]/10 ring-8 ring-[#d8b652]/5">
           {/* Background Image */}
           <Image
-            src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=80"
+            src="/images/fond.jpeg"
             alt="L'Âme du Vintage"
             fill
-            className="object-cover"
+            className="object-cover scale-105 filter blur-[4px]"
             priority
             unoptimized
           />
           {/* Dark Overlay for text readability */}
-          <div className="absolute inset-0 bg-encre/70 backdrop-blur-[3px]"></div>
+          <div className="absolute inset-0 bg-black/65 backdrop-blur-[2px]"></div>
           
           {/* Decorative elements */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(216,182,82,0.25),transparent_70%)]"></div>
           <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-[#d8b652]/20 rounded-full blur-[100px]"></div>
           <div className="absolute -top-20 -right-20 w-96 h-96 bg-[#d8b652]/10 rounded-full blur-[100px]"></div>
           
-          <div className="relative z-10 text-center px-6 max-w-4xl mx-auto mt-12">
-            <span className="text-[#d8b652] font-bold tracking-[0.25em] uppercase text-xs sm:text-sm mb-5 block">
+          <div className="relative z-10 text-center px-6 sm:px-10 max-w-4xl mx-auto flex flex-col items-center justify-center">
+            <span className="text-[#d8b652] font-extrabold tracking-[0.25em] uppercase text-xs sm:text-sm mb-3 block drop-shadow-sm">
               {t.about.history}
             </span>
-            <h1 className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tight leading-tight mb-8 drop-shadow-lg">
+            <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-tight mb-4 text-white drop-shadow-md">
               {t.about.title} <span className="text-[#d8b652] italic font-light">{t.about.titleHighlight}</span>
             </h1>
-            <p className="text-lg sm:text-xl lg:text-2xl text-white/90 font-light leading-relaxed max-w-3xl mx-auto drop-shadow-md">
+            <p className="text-base sm:text-lg lg:text-xl text-white/95 font-normal leading-relaxed max-w-3xl mx-auto drop-shadow-md">
               {t.about.subtitle}
             </p>
           </div>
